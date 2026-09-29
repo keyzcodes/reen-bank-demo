@@ -1,0 +1,10 @@
+{
+  "description": "This interactive web application offers users a realistic banking dashboard experience, showcasing accounts and transactions with demo data for easy navigation and management.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
