@@ -1,8 +1,19 @@
 import { useState } from "react";
+import type { FormEvent } from "react";
 const assets = "/assets";
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
+    function handleRegister(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("email") ?? "").trim();
+
+    sessionStorage.setItem("reen-registration-email", email);
+
+    window.location.assign("/verify-email");
+  }
 
   return (
     <main
@@ -71,7 +82,7 @@ export default function RegisterPage() {
             Register
           </h2>
 
-          <form className="mt-8" onSubmit={(event) => event.preventDefault()}>
+          <form className="mt-8" onSubmit={handleRegister}>
             <div className="space-y-6">
               <div>
                 <label
@@ -200,7 +211,7 @@ export default function RegisterPage() {
 
             <button
               type="submit"
-              className="mt-10 h-[65px] w-full rounded-[10px] bg-[#33b786] font-semibold text-white transition-[background-color,transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#269e73] hover:shadow-lg active:translate-y-0 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#269e73] motion-reduce:transition-none"
+              className="reen-auth-submit mt-10 h-[65px] w-full rounded-[10px] bg-[#33b786] font-semibold text-white"
             >
               Register
             </button>

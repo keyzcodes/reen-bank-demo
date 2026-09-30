@@ -102,7 +102,11 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <main ref={pageRef} style={{ fontFamily: "'DM Sans', sans-serif" }}>
+    <main
+      ref={pageRef}
+      className="reen-landing-page"
+      style={{ fontFamily: "'DM Sans', sans-serif" }}
+    >
       <section className="relative min-h-screen overflow-hidden bg-[#d4f3e7] lg:min-h-[1080px]">
         <header className="relative z-10 mx-auto flex w-full max-w-[1680px] flex-wrap items-center gap-6 px-6 pt-6 lg:h-[128px] lg:flex-nowrap lg:gap-0 lg:px-8 lg:pt-[64px] xl:px-10 min-[1700px]:px-0">
           <img
@@ -130,11 +134,11 @@ export default function LandingPage() {
           </nav>
 
           <a
-  href="/login"
-  className="ml-auto inline-flex h-11 items-center justify-center rounded-[10px] border-[3px] border-[#33b786] px-5 font-medium text-[#33b786] transition-[transform,background-color,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 active:scale-[0.96] motion-reduce:transition-none lg:h-[64px] lg:w-[140px] lg:px-0 lg:text-[24px]"
->
-  Login
-</a>
+            href="/login"
+            className="ml-auto inline-flex h-11 items-center justify-center rounded-[10px] border-[3px] border-[#33b786] px-5 font-medium text-[#33b786] transition-[transform,background-color,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 active:scale-[0.96] motion-reduce:transition-none lg:h-[64px] lg:w-[140px] lg:px-0 lg:text-[24px]"
+          >
+            Login
+          </a>
         </header>
 
         <div className="relative z-10 mx-auto w-full max-w-[1680px] px-6 pb-12 lg:mt-[207px] lg:px-8 xl:px-10 min-[1700px]:px-0">
@@ -151,9 +155,11 @@ export default function LandingPage() {
               className="mt-1 text-[clamp(42px,8vw,80px)] font-bold leading-[1.12] text-[#252525]"
               style={{ transitionDelay: "100ms" }}
             >
-              Experience
-              <br />
-              hassle-free banking
+              <span>
+                Experience
+                <br />
+                hassle-free banking
+              </span>
             </h1>
 
             <p

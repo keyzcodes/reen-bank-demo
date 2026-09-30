@@ -148,7 +148,7 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className="mt-10 h-[65px] w-full rounded-[10px] bg-[#33b786] font-semibold text-white transition-[background-color,transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#269e73] hover:shadow-lg active:translate-y-0 active:scale-[0.97] motion-reduce:transition-none"
+              className="reen-auth-submit mt-10 h-[65px] w-full rounded-[10px] bg-[#33b786] font-semibold text-white"
             >
               Login
             </button>
