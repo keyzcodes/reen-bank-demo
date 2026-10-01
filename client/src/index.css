@@ -272,7 +272,7 @@
     padding-right: calc(160 * var(--auth-unit));
   }
 
-  .reen-login-page .relative > span {
+  .reen-login-page .relative > .reen-login-forgot {
     right: calc(72 * var(--auth-unit));
     display: flex;
     align-items: center;
@@ -367,7 +367,7 @@
     padding-right: 110px;
   }
 
-  .reen-login-page .relative > span {
+  .reen-login-page .relative > .reen-login-forgot {
     right: 44px;
     font-size: 12px;
   }
@@ -1020,5 +1020,554 @@
     padding-inline: 0;
     border: 0;
     border-radius: calc(12 * var(--landing-unit));
+  }
+}
+
+.reen-logout-dialog {
+  box-sizing: border-box;
+  width: min(679px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100svh - 32px);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  border: 0;
+  border-radius: 32px;
+  background: #fff;
+  font-family: "DM Sans", sans-serif;
+
+  /* Visual approximation until the shadow values are verified. */
+  box-shadow: 0 0 150px 25px rgb(51 183 134 / 25%);
+}
+
+.reen-logout-dialog::backdrop {
+  background: rgb(0 0 0 / 15%);
+}
+
+.reen-logout-content {
+  padding: 32px 24px;
+}
+
+.reen-logout-message {
+  margin: 0;
+  color: #6c6c6c;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.reen-logout-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.reen-logout-actions button {
+  min-width: 0;
+  height: 48px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.reen-logout-cancel {
+  background: #d4d4d4;
+  color: #252525;
+}
+
+.reen-logout-confirm {
+  background: #33b786;
+  color: #fff;
+}
+
+.reen-logout-actions button:active {
+  opacity: 0.8;
+}
+
+.reen-logout-actions button:focus-visible {
+  outline: 2px solid #269e73;
+  outline-offset: 3px;
+}
+
+@media (min-width: 1024px) {
+  .reen-logout-dialog {
+    --logout-unit: min(0.0520833333vw, 1px);
+
+    width: calc(679 * var(--logout-unit));
+    height: calc(295 * var(--logout-unit));
+    border-radius: calc(32 * var(--logout-unit));
+  }
+
+  .reen-logout-content {
+    padding:
+      calc(72 * var(--logout-unit))
+      calc(80 * var(--logout-unit))
+      0;
+  }
+
+  .reen-logout-message {
+    display: flex;
+    align-items: center;
+    height: calc(31 * var(--logout-unit));
+    font-size: calc(24 * var(--logout-unit));
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .reen-logout-actions {
+    grid-template-columns: repeat(2, calc(240 * var(--logout-unit)));
+    gap: calc(39 * var(--logout-unit));
+    margin-top: calc(56 * var(--logout-unit));
+  }
+
+  .reen-logout-actions button {
+    height: calc(64 * var(--logout-unit));
+    padding: 0;
+    border-radius: calc(12 * var(--logout-unit));
+    font-size: calc(24 * var(--logout-unit));
+  }
+}
+
+.reen-reset-dialog {
+  box-sizing: border-box;
+  width: min(787px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100svh - 32px);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  border: 0;
+  border-radius: 32px;
+  background: #fff;
+  font-family: "DM Sans", sans-serif;
+  box-shadow: 0 0 150px 25px rgb(51 183 134 / 25%);
+}
+
+.reen-reset-dialog::backdrop {
+  background: rgb(0 0 0 / 15%);
+}
+
+.reen-reset-content {
+  padding: 32px 24px;
+}
+
+.reen-reset-content h2 {
+  margin: 0;
+  color: #33b786;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.reen-reset-content h2:focus {
+  outline: none;
+}
+
+.reen-reset-content form {
+  margin-top: 28px;
+}
+
+.reen-reset-content label {
+  display: block;
+  margin-bottom: 6px;
+  color: #252525;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.reen-reset-content input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  border: 1px solid #8a8a8a;
+  border-radius: 12px;
+  background: #fff;
+  color: #252525;
+  font: inherit;
+  font-size: 14px;
+  box-shadow: 0 0 50px 0.5px rgb(0 0 0 / 5%);
+}
+
+.reen-reset-content input:focus-visible {
+  outline: 2px solid #33b786;
+  outline-offset: 2px;
+}
+
+.reen-reset-content input::placeholder {
+  color: #aaa;
+}
+
+.reen-reset-primary {
+  display: block;
+  width: 100%;
+  height: 48px;
+  margin-top: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 12px;
+  background: #33b786;
+  color: #fff;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 50px 0.5px rgb(0 0 0 / 5%);
+}
+
+.reen-reset-primary:hover {
+  background: #288f69;
+}
+
+.reen-reset-primary:active {
+  opacity: 0.8;
+}
+
+.reen-reset-primary:focus-visible,
+.reen-reset-link:focus-visible {
+  outline: 2px solid #269e73;
+  outline-offset: 3px;
+}
+
+.reen-reset-repeat-label {
+  margin-top: 22px;
+}
+
+.reen-reset-description,
+.reen-reset-resend {
+  margin: 0;
+  color: #aaa;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.reen-reset-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #33b786;
+  font: inherit;
+  cursor: pointer;
+}
+
+.reen-reset-link:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.reen-reset-otp-fields {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.reen-reset-otp-fields input {
+  height: 44px;
+  padding: 0;
+  text-align: center;
+}
+
+.reen-reset-countdown {
+  margin: 16px 0 0;
+  color: #33b786;
+  font-size: 12px;
+}
+
+.reen-reset-resend {
+  margin-top: 20px;
+}
+
+.reen-reset-demo,
+.reen-reset-feedback {
+  margin: 14px 0 0;
+  color: #6c6c6c;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.reen-reset-feedback {
+  color: #b42318;
+}
+
+.reen-reset-success {
+  width: min(697px, calc(100vw - 32px));
+}
+
+.reen-reset-tick {
+  display: block;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 16px;
+  object-fit: contain;
+}
+
+.reen-reset-success h2 {
+  color: #6c6c6c;
+  font-size: 20px;
+}
+
+@media (min-width: 1024px) {
+  .reen-reset-dialog {
+    --reset-unit: min(0.0520833333vw, 1px);
+    width: calc(787 * var(--reset-unit));
+    min-height: calc(443 * var(--reset-unit));
+  }
+
+  .reen-reset-otp {
+    min-height: 0;
+  }
+
+  .reen-reset-dialog.reen-reset-otp {
+    min-height: calc(534 * var(--reset-unit));
+    display: block;
+    margin: auto;
+  }
+
+  .reen-reset-password {
+    min-height: calc(559 * var(--reset-unit));
+  }
+
+  .reen-reset-content {
+    padding:
+      calc(72 * var(--reset-unit))
+      calc(73.5 * var(--reset-unit))
+      calc(32 * var(--reset-unit));
+  }
+
+  .reen-reset-content h2 {
+    font-size: calc(40 * var(--reset-unit));
+    line-height: 1.3;
+  }
+
+  .reen-reset-content form {
+    margin-top: calc(44 * var(--reset-unit));
+  }
+
+  .reen-reset-content label {
+    margin-bottom: calc(4 * var(--reset-unit));
+    font-size: calc(16 * var(--reset-unit));
+    line-height: calc(23 * var(--reset-unit));
+  }
+
+  .reen-reset-content input {
+    height: calc(64 * var(--reset-unit));
+    font-size: calc(16 * var(--reset-unit));
+  }
+
+  .reen-reset-primary {
+    height: calc(64 * var(--reset-unit));
+    margin-top: calc(48 * var(--reset-unit));
+    font-size: calc(24 * var(--reset-unit));
+  }
+
+  .reen-reset-repeat-label {
+    margin-top: calc(25 * var(--reset-unit));
+  }
+
+  .reen-reset-description,
+  .reen-reset-resend,
+  .reen-reset-countdown {
+    font-size: calc(16 * var(--reset-unit));
+  }
+
+ .reen-reset-content .reen-reset-otp-fields {
+    grid-template-columns: repeat(6, calc(64 * var(--reset-unit)));
+    justify-content: space-between;
+    gap: 0;
+    margin-top: calc(22 * var(--reset-unit));
+  }
+
+  .reen-reset-countdown {
+    margin-top: calc(24 * var(--reset-unit));
+  }
+
+  .reen-reset-otp form > .reen-reset-primary {
+    margin-top: calc(28 * var(--reset-unit));
+  }
+
+  .reen-reset-resend {
+    margin-top: calc(24 * var(--reset-unit));
+  }
+
+  .reen-reset-success {
+    width: calc(697 * var(--reset-unit));
+    min-height: calc(479 * var(--reset-unit));
+  }
+
+  .reen-reset-success .reen-reset-content {
+    padding:
+      calc(32 * var(--reset-unit))
+      calc(80 * var(--reset-unit));
+  }
+
+  .reen-reset-tick {
+    width: calc(200 * var(--reset-unit));
+    height: calc(200 * var(--reset-unit));
+    margin-bottom: calc(24 * var(--reset-unit));
+  }
+
+  .reen-reset-success h2 {
+    font-size: calc(24 * var(--reset-unit));
+    line-height: calc(31 * var(--reset-unit));
+  }
+
+  .reen-reset-success .reen-reset-primary {
+    margin-top: calc(56 * var(--reset-unit));
+  }
+}
+
+.reen-reset-field {
+  position: relative;
+}
+
+.reen-reset-content .reen-reset-field input {
+  padding-right: 88px;
+}
+
+.reen-reset-content .reen-reset-email-field input {
+  padding-right: 52px;
+}
+
+.reen-reset-envelope,
+.reen-reset-lock {
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  transform: translateY(-50%);
+  color: #aaa;
+  pointer-events: none;
+}
+
+.reen-reset-envelope {
+  right: 18px;
+}
+
+.reen-reset-lock {
+  right: 54px;
+}
+
+.reen-reset-eye {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #888;
+  cursor: pointer;
+}
+
+.reen-reset-eye svg {
+  width: 20px;
+  height: 20px;
+}
+
+.reen-reset-eye:hover {
+  color: #33b786;
+}
+
+.reen-reset-eye:focus-visible {
+  outline: 2px solid #33b786;
+  outline-offset: 2px;
+}
+
+.reen-reset-password-help {
+  margin: 12px 0 0;
+  color: #6c6c6c;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.reen-reset-content .reen-reset-field input {
+  padding-right: 56px;
+}
+
+.reen-reset-lock-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.reen-reset-lock-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+.reen-reset-lock-toggle:hover {
+  color: #33b786;
+}
+
+.reen-reset-lock-toggle:focus-visible {
+  outline: 2px solid #33b786;
+  outline-offset: 2px;
+}
+
+.reen-login-page .reen-auth-card .relative > .reen-login-forgot {
+  position: absolute;
+  top: 50%;
+  right: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 28px;
+  margin: 0;
+  padding: 0 0 0 10px;
+  transform: translateY(-50%);
+  border: 0;
+  border-left: 1px solid #ccc;
+  border-radius: 0;
+  background: transparent;
+  color: #33b786;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.reen-login-forgot:hover {
+  text-decoration: underline;
+}
+
+.reen-login-forgot:focus-visible {
+  outline: 2px solid #33b786;
+  outline-offset: 3px;
+}
+
+@media (min-width: 1024px) {
+  .reen-login-page .reen-auth-card .relative > .reen-login-forgot {
+    right: calc(72 * var(--auth-unit));
+    height: calc(40 * var(--auth-unit));
+    padding-left: calc(24 * var(--auth-unit));
+    font-size: calc(16 * var(--auth-unit));
   }
 }

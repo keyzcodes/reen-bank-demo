@@ -1,8 +1,10 @@
 import { useState } from "react";
+import PasswordResetOverlay from "../components/PasswordResetOverlay";
 const assets = "/assets";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [passwordResetOpen, setPasswordResetOpen] = useState(false);
 
   return (
     <main
@@ -118,9 +120,13 @@ export default function LoginPage() {
                   required
                   className="h-[65px] w-full rounded-[10px] border border-[#b8b8b8] bg-white px-5 pr-28 text-base outline-none focus:border-[#33b786] focus:ring-2 focus:ring-[#33b786]/20"
                 />
-                <span className="absolute right-12 top-1/2 -translate-y-1/2 text-sm text-[#33b786]">
+                <button
+                  type="button"
+                  onClick={() => setPasswordResetOpen(true)}
+                  className="reen-login-forgot"
+                >
                   Forgot?
-                </span>
+                </button>
                 <button
                   type="button"
                   onClick={() => setShowPassword((visible) => !visible)}
@@ -138,9 +144,13 @@ export default function LoginPage() {
                     strokeLinejoin="round"
                     className="h-5 w-5"
                   >
-                    <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
-                    <circle cx="12" cy="12" r="2.5" />
-                    {showPassword && <path d="M3 3 21 21" />}
+                    <rect x="5" y="10" width="14" height="11" rx="2" />
+                    {showPassword ? (
+                      <path d="M8 10V7a4 4 0 0 1 8-0.5" />
+                    ) : (
+                      <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                    )}
+                    <path d="M12 14v3" />
                   </svg>
                 </button>
               </div>
@@ -162,6 +172,10 @@ export default function LoginPage() {
           </p>
         </section>
       </div>
+
+      {passwordResetOpen && (
+        <PasswordResetOverlay onDismiss={() => setPasswordResetOpen(false)} />
+      )}
     </main>
   );
 }

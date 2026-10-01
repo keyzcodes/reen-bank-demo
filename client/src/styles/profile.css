@@ -1,0 +1,421 @@
+/* PROFILE: Mobile-first layout.
+   Mobile has no Figma reference; these sizes are our responsive adaptation. */
+.reen-profile-page {
+  display: grid;
+  gap: 32px;
+  min-width: 0;
+  font-family: "DM Sans", sans-serif;
+  color: #252525;
+}
+
+.reen-profile-card {
+  position: relative;
+  min-width: 0;
+  padding: 28px 24px;
+  border: 0;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: none;
+}
+
+.reen-profile-avatar-wrap {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  margin: 0 auto;
+}
+
+.reen-profile-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* PROFILE: Verified edit-control background and shadow. */
+.reen-profile-edit {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+  border: 0;
+  border-radius: 12px;
+  background: #d4d4d4;
+  box-shadow: 0 0 50px 0.5px rgb(0 0 0 / 15%);
+  cursor: pointer;
+}
+
+.reen-profile-edit svg {
+  width: 100%;
+  height: 100%;
+}
+
+.reen-profile-name {
+  margin: 20px 0 0;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.reen-profile-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 115px;
+  height: 37px;
+  margin: 8px auto 0;
+  border-radius: 8px;
+  background: #e4d2ff;
+  color: #46237a;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* PROFILE: Saved detail rows.
+   Gender label styling and first-divider position are inferred from adjacent rows. */
+.reen-profile-details {
+  width: 100%;
+  max-width: 357px;
+  margin: 40px auto 0;
+}
+
+.reen-profile-details > div {
+  padding-bottom: 24px;
+}
+
+.reen-profile-details > div + div {
+  padding-top: 24px;
+  border-top: 1px solid #d9d9d9;
+}
+
+.reen-profile-details dt {
+  color: #33b786;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.reen-profile-details dd {
+  margin: 4px 0 0;
+  font-size: 18px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.reen-profile-reset {
+  display: block;
+  width: 100%;
+  max-width: 357px;
+  height: 48px;
+  margin: 24px auto 0;
+  border: 0;
+  border-radius: 12px;
+  background: #33b786;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  box-shadow: 0 0 50px 0.5px rgb(0 0 0 / 5%);
+  cursor: pointer;
+}
+
+/* PROFILE: Balance background/radius inferred from the visible reference. */
+.reen-profile-balance {
+  position: relative;
+  padding: 28px;
+  border-radius: 12px;
+  background: #d4f3e7;
+}
+
+.reen-profile-balance p {
+  margin: 0;
+  color: #46237a;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.reen-profile-balance strong {
+  display: block;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 40px;
+  font-weight: 400;
+}
+
+.reen-profile-balance button {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.reen-profile-balance button img,
+.reen-profile-balance button svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* PROFILE: Transaction text styling reused from the existing dashboard.
+   Individual row text properties have not been verified from Figma yet. */
+.reen-profile-transactions {
+  margin-top: 48px;
+}
+
+.reen-profile-transactions-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.reen-profile-transactions-heading h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.reen-profile-transactions-heading button {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.reen-profile-transactions-heading img {
+  width: 100%;
+  height: 100%;
+}
+
+.reen-profile-transaction {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #d9d9d9;
+  color: #8c8c8c;
+  font-size: 14px;
+}
+
+.reen-profile-transaction > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reen-profile-transaction time {
+  grid-column: 1;
+  font-size: 12px;
+}
+
+.reen-profile-transaction strong {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.reen-profile-transaction .is-credit { color: #33b786; }
+.reen-profile-transaction .is-debit { color: #e74f5b; }
+
+/* PROFILE: Editing controls — added functionality, not a supplied Figma screen. */
+.reen-profile-editor {
+  display: grid;
+  gap: 16px;
+  max-width: 357px;
+  margin: 28px auto 0;
+}
+
+.reen-profile-editor label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.reen-profile-editor input,
+.reen-profile-editor select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px;
+  border: 1px solid #8a8a8a;
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+}
+
+.reen-profile-editor-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.reen-profile-editor-actions button {
+  flex: 1;
+  min-height: 44px;
+  padding: 8px;
+  border: 0;
+  border-radius: 8px;
+  background: #d4d4d4;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.reen-profile-editor-actions button[type="submit"] {
+  background: #33b786;
+  color: #fff;
+}
+
+.reen-profile-page button:focus-visible,
+.reen-profile-editor input:focus-visible,
+.reen-profile-editor select:focus-visible {
+  outline: 2px solid #269e73;
+  outline-offset: 3px;
+}
+
+/* PROFILE: Desktop card geometry.
+   At 1920px, one unit equals one Figma pixel.
+   Overall page placement will be corrected in DashboardLayout later. */
+@media (min-width: 1024px) {
+  .reen-profile-page {
+    --profile-unit: min(0.0520833333vw, 1px);
+    grid-template-columns:
+      minmax(0, calc(702 * var(--profile-unit)))
+      minmax(0, calc(481 * var(--profile-unit)));
+    gap: calc(128 * var(--profile-unit));
+  }
+
+  .reen-profile-card {
+    min-height: calc(828 * var(--profile-unit));
+    padding: calc(40 * var(--profile-unit)) calc(172 * var(--profile-unit));
+  }
+
+  .reen-profile-avatar-wrap {
+    width: calc(160 * var(--profile-unit));
+    height: calc(160 * var(--profile-unit));
+  }
+
+  .reen-profile-edit {
+    top: calc(8 * var(--profile-unit));
+    right: calc(8 * var(--profile-unit));
+    width: calc(32 * var(--profile-unit));
+    height: calc(32 * var(--profile-unit));
+    padding: calc(6 * var(--profile-unit));
+  }
+
+  .reen-profile-name {
+    margin-top: calc(24 * var(--profile-unit));
+    font-size: calc(32 * var(--profile-unit));
+    line-height: calc(42 * var(--profile-unit));
+    white-space: nowrap;
+  }
+
+  .reen-profile-badge {
+    width: calc(115 * var(--profile-unit));
+    height: calc(37 * var(--profile-unit));
+    margin-top: calc(13 * var(--profile-unit));
+    font-size: calc(16 * var(--profile-unit));
+  }
+
+  .reen-profile-details {
+    margin-top: calc(56 * var(--profile-unit));
+  }
+
+  .reen-profile-details > div {
+    height: calc(120 * var(--profile-unit));
+    padding: 0;
+  }
+
+  .reen-profile-details > div + div {
+    padding-top: calc(40 * var(--profile-unit));
+    /* Divider offset inferred; preserve verified label/value spacing. */
+    border-top: 0;
+    position: relative;
+  }
+
+  .reen-profile-details > div + div::before {
+    content: "";
+    position: absolute;
+    top: calc(6 * var(--profile-unit));
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #d9d9d9;
+  }
+
+  .reen-profile-details > div + div {
+    padding-top: 0;
+  }
+
+  .reen-profile-details > div + div::before {
+    top: calc(-34 * var(--profile-unit));
+  }
+
+  .reen-profile-details dt {
+    font-size: calc(16 * var(--profile-unit));
+    line-height: calc(21 * var(--profile-unit));
+  }
+
+  .reen-profile-details dd {
+    margin-top: calc(4 * var(--profile-unit));
+    font-size: calc(24 * var(--profile-unit));
+    line-height: calc(31 * var(--profile-unit));
+    white-space: nowrap;
+  }
+
+  .reen-profile-reset {
+    height: calc(64 * var(--profile-unit));
+    margin-top: calc(-8 * var(--profile-unit));
+    font-size: calc(24 * var(--profile-unit));
+  }
+
+  .reen-profile-right {
+    padding-top: calc(42 * var(--profile-unit));
+  }
+
+  .reen-profile-balance {
+    height: calc(141 * var(--profile-unit));
+    padding: calc(32 * var(--profile-unit)) calc(40 * var(--profile-unit));
+  }
+
+  .reen-profile-balance p {
+    font-size: calc(16 * var(--profile-unit));
+    line-height: calc(21 * var(--profile-unit));
+  }
+
+  .reen-profile-balance strong {
+    font-size: calc(40 * var(--profile-unit));
+    line-height: calc(48 * var(--profile-unit));
+  }
+
+  .reen-profile-balance button {
+    top: calc(32 * var(--profile-unit));
+    right: calc(40 * var(--profile-unit));
+    width: calc(24 * var(--profile-unit));
+    height: calc(24 * var(--profile-unit));
+  }
+
+  .reen-profile-transactions {
+    margin-top: calc(96 * var(--profile-unit));
+  }
+
+  .reen-profile-transaction {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  .reen-profile-transaction time,
+  .reen-profile-transaction strong {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}

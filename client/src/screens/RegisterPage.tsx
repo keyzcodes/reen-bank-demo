@@ -4,7 +4,7 @@ const assets = "/assets";
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
-    function handleRegister(event: FormEvent<HTMLFormElement>) {
+  function handleRegister(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -187,9 +187,13 @@ export default function RegisterPage() {
                       strokeLinejoin="round"
                       className="h-5 w-5"
                     >
-                      <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
-                      <circle cx="12" cy="12" r="2.5" />
-                      {showPassword && <path d="M3 3 21 21" />}
+                      <rect x="5" y="10" width="14" height="11" rx="2" />
+                      {showPassword ? (
+                        <path d="M8 10V7a4 4 0 0 1 8-0.5" />
+                      ) : (
+                        <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                      )}
+                      <path d="M12 14v3" />
                     </svg>
                   </button>
                 </div>
