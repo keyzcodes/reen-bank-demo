@@ -1,0 +1,179 @@
+/* DASHBOARD FRAME:
+   Desktop reference: 1920 × 1080.
+   One unit equals one Figma pixel at a 1920px viewport width.
+   Smaller desktop widths scale proportionally.
+   Content may extend vertically; do not lock or hide page scrolling. */
+@media (min-width: 1024px) {
+  .reen-dashboard-shell {
+    --dashboard-unit: min(0.0520833333vw, 1px);
+    max-width: 1920px;
+    margin-inline: auto;
+  }
+
+  /* SIDEBAR: Logo at x=120, y=64; main area begins at x=491. */
+  .reen-dashboard-shell .reen-dashboard-sidebar {
+    position: relative;
+    align-self: flex-start;
+    flex: 0 0 calc(491 * var(--dashboard-unit));
+    width: calc(491 * var(--dashboard-unit));
+    min-height: calc(1080 * var(--dashboard-unit));
+    padding:
+      calc(64 * var(--dashboard-unit)) 0
+      calc(64 * var(--dashboard-unit))
+      calc(120 * var(--dashboard-unit));
+  }
+
+  .reen-dashboard-shell .reen-dashboard-sidebar > div:first-child {
+    margin-bottom: calc(120 * var(--dashboard-unit));
+  }
+
+  .reen-dashboard-shell .reen-dashboard-sidebar > div:first-child img {
+    width: calc(273 * var(--dashboard-unit));
+    height: calc(64 * var(--dashboard-unit));
+  }
+
+  /* NAVIGATION: 32px icon slots with 40px gaps between rows. */
+  .reen-dashboard-shell .reen-dashboard-sidebar nav,
+  .reen-dashboard-shell .reen-dashboard-sidebar button {
+    gap: calc(40 * var(--dashboard-unit));
+  }
+
+  .reen-dashboard-shell .reen-dashboard-sidebar button > img,
+  .reen-dashboard-shell .reen-dashboard-sidebar button > div {
+    width: calc(32 * var(--dashboard-unit));
+    height: calc(32 * var(--dashboard-unit));
+  }
+
+  .reen-dashboard-shell .reen-dashboard-sidebar button > span {
+    font-size: calc(20 * var(--dashboard-unit));
+    line-height: calc(26 * var(--dashboard-unit));
+  }
+
+  /* TRANSACTIONS ICON:
+     Preserve its wider group while keeping labels at the same x position. */
+  .reen-dashboard-shell .reen-dashboard-sidebar nav button > .reen-transactions-icon {
+    width: calc(38.56 * var(--dashboard-unit));
+    height: calc(31.56 * var(--dashboard-unit));
+    margin-left: calc(-3 * var(--dashboard-unit));
+    margin-right: calc(-3.56 * var(--dashboard-unit));
+  }
+
+  .reen-dashboard-shell .reen-dashboard-sidebar nav button > .reen-transactions-icon > img {
+    width: calc(25.5601 * var(--dashboard-unit));
+    height: calc(25.5601 * var(--dashboard-unit));
+  }
+
+  /* LOGOUT: Positioned inside the sidebar, not fixed to the viewport. */
+  .reen-dashboard-shell .reen-dashboard-sidebar > .reen-dashboard-logout {
+    position: absolute;
+    top: calc(984 * var(--dashboard-unit));
+    left: calc(120 * var(--dashboard-unit));
+    width: calc(137 * var(--dashboard-unit));
+    height: calc(32 * var(--dashboard-unit));
+    margin: 0;
+    padding: 0;
+    gap: calc(40 * var(--dashboard-unit));
+    align-items: center;
+  }
+
+  .reen-dashboard-shell .reen-dashboard-logout > span {
+    font-size: calc(20 * var(--dashboard-unit));
+    line-height: calc(26 * var(--dashboard-unit));
+    font-weight: 500;
+    color: #555555;
+  }
+
+  /* MAIN AREA: Ends at x=1823 in the reference frame. */
+  .reen-dashboard-shell .reen-dashboard-main {
+    flex: 0 0 calc(1332 * var(--dashboard-unit));
+    width: calc(1332 * var(--dashboard-unit));
+    padding:
+      calc(64 * var(--dashboard-unit)) 0
+      calc(62 * var(--dashboard-unit));
+  }
+
+  /* HEADER:
+     Left column ends at x=1214; right column starts at x=1342.
+     The main content begins after this 126px header. */
+  .reen-dashboard-shell .reen-dashboard-header {
+    display: grid;
+    grid-template-columns:
+      calc(723 * var(--dashboard-unit))
+      calc(481 * var(--dashboard-unit));
+    grid-template-rows: auto;
+    column-gap: calc(128 * var(--dashboard-unit));
+    row-gap: 0;
+    align-items: start;
+    height: calc(126 * var(--dashboard-unit));
+    margin: 0;
+  }
+
+  .reen-dashboard-shell .reen-dashboard-title {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+    margin: calc(7 * var(--dashboard-unit)) 0 0;
+    font-size: calc(40 * var(--dashboard-unit));
+    line-height: calc(52 * var(--dashboard-unit));
+  }
+
+  /* CUSTOMER: Name and number share the left column's right edge. */
+  .reen-dashboard-shell .reen-dashboard-customer {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: end;
+    align-items: flex-end;
+    min-width: 0;
+    max-width: calc(400 * var(--dashboard-unit));
+    margin-top: calc(11 * var(--dashboard-unit));
+    text-align: right;
+  }
+
+  .reen-dashboard-shell .reen-dashboard-customer > span:first-child {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    font-size: calc(16 * var(--dashboard-unit));
+    line-height: calc(21 * var(--dashboard-unit));
+  }
+
+  .reen-dashboard-shell .reen-dashboard-customer > span:last-child {
+    margin-top: calc(4 * var(--dashboard-unit));
+    font-size: calc(40 * var(--dashboard-unit));
+    line-height: calc(48 * var(--dashboard-unit));
+  }
+
+  /* TOOLS: Search, bell and avatar occupy the right header column. */
+  .reen-dashboard-shell .reen-dashboard-tools {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    gap: calc(40 * var(--dashboard-unit));
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    height: calc(56 * var(--dashboard-unit));
+    margin-top: calc(31 * var(--dashboard-unit));
+  }
+
+  .reen-dashboard-shell .reen-dashboard-search {
+    gap: calc(16 * var(--dashboard-unit));
+    margin-right: auto;
+  }
+
+  .reen-dashboard-shell .reen-dashboard-search img,
+  .reen-dashboard-shell .reen-dashboard-notifications img {
+    width: calc(24 * var(--dashboard-unit));
+    height: calc(24 * var(--dashboard-unit));
+  }
+
+  .reen-dashboard-shell .reen-dashboard-search span {
+    font-size: calc(16 * var(--dashboard-unit));
+    line-height: calc(21 * var(--dashboard-unit));
+  }
+
+  .reen-dashboard-shell .reen-dashboard-avatar img {
+    width: calc(56 * var(--dashboard-unit));
+    height: calc(56 * var(--dashboard-unit));
+  }
+}

@@ -1,224 +1,49 @@
 import { useState } from "react";
+import DashboardLayout from "./components/DashboardLayout";
+import type { NavItem } from "./components/DashboardSidebar";
 import type { AccountId } from "./data";
 import { accounts, allTransactions } from "./data";
 import AccountsScreen from "./screens/AccountsScreen";
 import TransactionsScreen from "./screens/TransactionsScreen";
-import LogoutOverlay from "./components/LogoutOverlay";
-import PasswordResetOverlay from "./components/PasswordResetOverlay";
-// APP: Separate Profile page and shared customer-data type.
 import ProfilePage from "./screens/ProfilePage";
 import type { CustomerProfile } from "./screens/ProfilePage";
+import LogoutOverlay from "./components/LogoutOverlay";
+import PasswordResetOverlay from "./components/PasswordResetOverlay";
 
-/* ── asset map ───────────────────────────────────────────────────── */
+// OVERVIEW ASSETS: Retained for the existing Overview content.
+// The shared frame now owns its background, logo and navigation assets.
 const assetPathPrefix = "/assets";
-const imgDashboard = `${assetPathPrefix}/a9339.png`;
-const imgLogo = `${assetPathPrefix}/17ec0.png`;
 const imgImage32 = `${assetPathPrefix}/2828e.png`;
 const imgImage34 = `${assetPathPrefix}/9cb34.png`;
 const imgEllipse32 = `${assetPathPrefix}/3d67d.png`;
 const imgRectangle167 = `${assetPathPrefix}/b525e.png`;
-const imgFiSrApps = `${assetPathPrefix}/5d2cf.svg`;
-const imgFiRrCreditCard = `${assetPathPrefix}/6e619.svg`;
-const imgFiRrArrowSmallLeft = `${assetPathPrefix}/c2da1.svg`;
-const imgFiRrArrowSmallRight = `${assetPathPrefix}/d3423.svg`;
-const imgFiRrUser = `${assetPathPrefix}/136ba.svg`;
-const imgFiRrArrowLeft = `${assetPathPrefix}/01571.svg`;
 const imgFiRrCalendar = `${assetPathPrefix}/b2d13.svg`;
 const imgFiRrAngleSmallDown = `${assetPathPrefix}/5bab1.svg`;
 const imgFiRrEyeCrossed = `${assetPathPrefix}/b8200.svg`;
 const imgFiRrPlusSmall = `${assetPathPrefix}/acf9a.svg`;
-const imgNotificationBell = `${assetPathPrefix}/23954.svg`;
-const imgFiRrSearch = `${assetPathPrefix}/a3065.svg`;
 const imgFiRrArrowSmallRight1 = `${assetPathPrefix}/613bb.svg`;
 const imgFiRrArrowSmallRight2 = `${assetPathPrefix}/1e66e.svg`;
 
-/* ── types ───────────────────────────────────────────────────────── */
-type NavItem = "Overview" | "Accounts" | "Transactions" | "Profile";
-
-/* ── shared style objects ────────────────────────────────────────── */
+// OVERVIEW TYPOGRAPHY: Existing styles remain until Overview is rebuilt.
 const dmBold = {
   fontFamily: "'DM Sans', sans-serif",
   fontWeight: 700,
-  fontVariationSettings: '"opsz" 14',
+  fontVariationSettings: '\"opsz\" 14',
 } as const;
 const dmMedium = {
   fontFamily: "'DM Sans', sans-serif",
   fontWeight: 500,
-  fontVariationSettings: '"opsz" 14',
+  fontVariationSettings: '\"opsz\" 14',
 } as const;
 const bebasNum = {
   fontFamily: "'Bebas Neue', cursive",
   fontWeight: 400,
 } as const;
 
-/* ── demo data for Overview ──────────────────────────────────────── */
+// DEMO DATA: These fixture transactions are not connected to the backend.
 const overviewTransactions = allTransactions.slice(0, 8);
 
-const navItems: { id: NavItem; label: string }[] = [
-  { id: "Overview", label: "Overview" },
-  { id: "Accounts", label: "Accounts" },
-  { id: "Transactions", label: "Transactions" },
-  { id: "Profile", label: "Profile" },
-];
-
-/* NAVIGATION: Select the exact exported Figma icon for each state.
-   Green icons show the selected page; grey icons show other pages.
-   Keep the existing sizing and positioning unchanged. */
-function navIcon(id: NavItem, active: boolean) {
-  if (id === "Overview") {
-    return (
-      <img
-        src={active ? "/assets/5d2cf.svg" : "/assets/8b96e.svg"}
-        alt=""
-        className="w-8 h-8 shrink-0"
-      />
-    );
-  }
-
-  if (id === "Accounts") {
-    return (
-      <img
-        src={active ? "/assets/1013a.svg" : "/assets/6e619.svg"}
-        alt=""
-        className="w-8 h-8 shrink-0"
-      />
-    );
-  }
-
-  if (id === "Transactions") {
-    return (
-      /* NAVIGATION: Preserve the two-arrow icon's existing geometry. */
-      <div className="reen-transactions-icon relative w-8 h-8 shrink-0">
-        <img
-          src={active ? "/assets/61884.svg" : "/assets/c2da1.svg"}
-          alt=""
-          className="absolute top-0 left-0 w-[25.56px] h-[25.56px]"
-        />
-        <img
-          src={active ? "/assets/6a560.svg" : "/assets/d3423.svg"}
-          alt=""
-          className="absolute bottom-0 right-0 w-[25.56px] h-[25.56px]"
-        />
-      </div>
-    );
-  }
-
-  return (
-    <img
-      src={active ? "/assets/c490e.svg" : "/assets/136ba.svg"}
-      alt=""
-      className="w-8 h-8 shrink-0"
-    />
-  );
-}
-
-/* ── NavButton ───────────────────────────────────────────────────── */
-function NavButton({
-  item,
-  active,
-  onClick,
-  compact = false,
-}: {
-  item: { id: NavItem; label: string };
-  active: boolean;
-  onClick: () => void;
-  compact?: boolean;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex items-center cursor-pointer transition-colors ${
-        compact ? "gap-3 px-3 py-2 rounded-lg" : "gap-10"
-      } ${compact && active ? "bg-[#33b786]/10" : ""}`}
-    >
-      {navIcon(item.id, active)}
-      <span
-        className="text-[20px] leading-normal whitespace-nowrap"
-        style={{
-          ...(active ? dmBold : dmMedium),
-          color: active ? "#33b786" : "#555",
-        }}
-      >
-        {item.label}
-      </span>
-    </button>
-  );
-}
-
-/* DASHBOARD HEADER:
-   Customer details and the small avatar use the saved profile state.
-   Profile desktop CSS aligns these groups with the columns below. */
-function TopBar({
-  title,
-  profile,
-}: {
-  title: string;
-  profile: CustomerProfile;
-}) {
-  return (
-    <div className="reen-dashboard-header hidden md:flex items-start justify-between flex-wrap gap-4 mb-6 md:mb-8 xl:mb-[100px]">
-      {/* HEADER TITLE: Aligned with the white card on Profile desktop. */}
-      <h1
-        className="reen-dashboard-title text-[32px] xl:text-[40px] leading-normal text-[#252525]"
-        style={dmBold}
-      >
-        {title}
-      </h1>
-
-      {/* HEADER CUSTOMER: Right edge matches the white card's right edge.
-          The account number is still a demo value. */}
-      <div className="reen-dashboard-customer flex flex-col items-center">
-        <span
-          className="text-sm xl:text-[16px] text-[#33b786] leading-normal"
-          style={dmMedium}
-        >
-          {profile.name}
-        </span>
-
-        <span
-          className="text-[32px] xl:text-[40px] text-[#252525] not-italic"
-          style={bebasNum}
-        >
-          1234567890
-        </span>
-      </div>
-
-      {/* HEADER TOOLS: Search starts above the right panel.
-          The avatar ends at the right panel's right edge. */}
-      <div className="reen-dashboard-tools flex flex-1 min-w-[220px] max-w-[481px] items-center gap-4 xl:gap-6">
-        <div className="reen-dashboard-search mr-auto flex items-center gap-3">
-          <img src={imgFiRrSearch} alt="" className="w-6 h-6" />
-
-          <span className="text-[16px] text-[#8c8c8c]" style={dmMedium}>
-            Search
-          </span>
-        </div>
-
-        <button
-          type="button"
-          aria-label="Notifications"
-          className="reen-dashboard-notifications cursor-pointer"
-        >
-          <img src={imgNotificationBell} alt="" className="w-6 h-6" />
-        </button>
-
-        <button
-          type="button"
-          aria-label="Profile"
-          className="reen-dashboard-avatar cursor-pointer"
-        >
-          <img
-            src={profile.avatar}
-            alt=""
-            className="w-12 xl:w-[56px] h-12 xl:h-[56px] rounded-full object-cover"
-          />
-        </button>
-      </div>
-    </div>
-  );
-}
-
-/* ── Overview screen ─────────────────────────────────────────────── */
+// OVERVIEW CONTENT: Preserved during the frame extraction.
 function OverviewScreen({
   balanceHidden,
   onToggleBalance,
@@ -230,7 +55,6 @@ function OverviewScreen({
 }) {
   const masked = "••••••••••";
   const fmt = (v: string) => (balanceHidden ? masked : v);
-
   return (
     <div className="xl:flex xl:gap-10 2xl:gap-12">
       {/* center column */}
@@ -302,7 +126,6 @@ function OverviewScreen({
             </div>
           </div>
         </section>
-
         {/* Accounts */}
         <section>
           <div className="flex items-center justify-between mb-4">
@@ -346,7 +169,6 @@ function OverviewScreen({
             ))}
           </div>
         </section>
-
         {/* Statistics */}
         <section>
           <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
@@ -413,7 +235,6 @@ function OverviewScreen({
           </div>
         </section>
       </div>
-
       {/* right panel */}
       <div className="xl:w-[481px] xl:shrink-0 flex flex-col gap-8 mt-8 xl:mt-0">
         {/* Transactions */}
@@ -469,7 +290,6 @@ function OverviewScreen({
             ))}
           </div>
         </section>
-
         {/* Upgrade to PRO */}
         <div
           className="relative rounded-[15px] overflow-hidden"
@@ -507,10 +327,11 @@ function OverviewScreen({
   );
 }
 
-/* ── Shell ───────────────────────────────────────────────────────── */
+// APP COORDINATOR:
+// Owns shared data, selected page and overlay visibility.
+// DashboardLayout owns the frame and mobile-menu visibility.
 export default function App() {
-  // APP: Single source of truth for both profile-picture displays.
-  // Temporary React state; refreshing restores these initial values.
+  // PROFILE DATA: Temporary React state; refresh restores these defaults.
   const [profile, setProfile] = useState<CustomerProfile>({
     name: "Maureen Oguche",
     email: "oguchemaureenm@gmail.com",
@@ -518,229 +339,77 @@ export default function App() {
     gender: "Female",
     avatar: imgEllipse32,
   });
+  const [activeNav, setActiveNav] = useState<NavItem>("Overview");
+  const [balanceHidden, setBalanceHidden] = useState(false);
+  const [selectedAccount, setSelectedAccount] = useState<AccountId>("main");
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [passwordResetOpen, setPasswordResetOpen] = useState(false);
 
-  function handleLogout() {
-    setLogoutOpen(true);
+  function navigate(page: NavItem) {
+    setActiveNav(page);
   }
 
+  // DEMO LOGOUT: Clears the registration-flow email and returns to Landing.
+  // This does not invalidate a backend session; real authentication comes later.
   function confirmLogout() {
     sessionStorage.removeItem("reen-registration-email");
     window.location.replace("/landing");
   }
-  const [activeNav, setActiveNav] = useState<NavItem>("Overview");
-  const [balanceHidden, setBalanceHidden] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [selectedAccount, setSelectedAccount] = useState<AccountId>("main");
-
-  const pageTitle: Record<NavItem, string> = {
-    Overview: "Overview",
-    Accounts: "Accounts",
-    Transactions: "Transactions",
-    Profile: "Profile",
-  };
-
-  function navigate(nav: NavItem) {
-    setActiveNav(nav);
-    setMenuOpen(false);
-  }
 
   return (
-    <div
-      className={`relative min-h-screen w-full overflow-x-hidden ${
-        activeNav === "Profile" ? "reen-profile-shell" : ""
-      }`}
-      style={{ fontFamily: "'DM Sans', sans-serif" }}
-    >
-      {/* ── background ───────────────────────────────────────────── */}
-      <div aria-hidden className="fixed inset-0 pointer-events-none">
-        <div className="absolute bg-[#d4f3e7] inset-0" />
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage: `url("${imgDashboard}")`,
-            backgroundSize: "1086px 1086px",
-            backgroundPosition: "top left",
-          }}
-        />
-        <div className="absolute bg-[rgba(255,255,255,0.75)] inset-0" />
-      </div>
-
-      {/* ── mobile header ────────────────────────────────────────── */}
-      <header className="md:hidden relative z-30 flex items-center justify-between px-4 py-3 border-b border-[#d4f3e7] bg-white/80 backdrop-blur-sm">
-        <img
-          src={imgLogo}
-          alt="Reen Bank"
-          className="h-10 w-auto object-contain"
-        />
-        <div className="flex items-center gap-3">
-          <button className="min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer">
-            <img
-              src={imgNotificationBell}
-              alt="Notifications"
-              className="w-6 h-6"
-            />
-          </button>
-          <button className="cursor-pointer">
-            <img
-              src={profile.avatar}
-              alt="Profile"
-              className="w-10 h-10 rounded-full object-cover"
-            />
-          </button>
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-1.5 cursor-pointer"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-          >
-            <span
-              className={`block w-6 h-0.5 bg-[#252525] transition-transform origin-center ${menuOpen ? "rotate-45 translate-y-2" : ""}`}
-            />
-            <span
-              className={`block w-6 h-0.5 bg-[#252525] transition-opacity ${menuOpen ? "opacity-0" : ""}`}
-            />
-            <span
-              className={`block w-6 h-0.5 bg-[#252525] transition-transform origin-center ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`}
-            />
-          </button>
-        </div>
-        {menuOpen && (
-          <div className="absolute top-full left-0 right-0 bg-white/95 backdrop-blur-sm shadow-lg z-50 px-4 py-4 flex flex-col gap-2 border-b border-[#d4f3e7]">
-            {navItems.map((item) => (
-              <NavButton
-                key={item.id}
-                item={item}
-                active={activeNav === item.id}
-                onClick={() => navigate(item.id)}
-                compact
-              />
-            ))}
-            <div className="border-t border-[#d4f3e7] mt-2 pt-2">
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="flex items-center gap-3 px-3 py-2 cursor-pointer"
-              >
-                <img
-                  src={imgFiRrArrowLeft}
-                  alt=""
-                  className="w-8 h-8 shrink-0"
-                />
-                <span
-                  className="text-[20px] leading-normal text-[#555]"
-                  style={dmMedium}
-                >
-                  Logout
-                </span>
-              </button>
-            </div>
-          </div>
+    <>
+      {/* SHARED FRAME: Every dashboard page uses the same outer layout. */}
+      <DashboardLayout
+        activeNav={activeNav}
+        profile={profile}
+        onNavigate={navigate}
+        onLogout={() => setLogoutOpen(true)}
+      >
+        {/* PAGE CONTENT: Kept separate from the shared sidebar and header. */}
+        {activeNav === "Overview" && (
+          <OverviewScreen
+            balanceHidden={balanceHidden}
+            onToggleBalance={() => setBalanceHidden((hidden) => !hidden)}
+            onNavigate={navigate}
+          />
         )}
-      </header>
+        {activeNav === "Accounts" && (
+          <AccountsScreen
+            selectedAccountId={selectedAccount}
+            onSelectAccount={setSelectedAccount}
+            balanceHidden={balanceHidden}
+            onToggleBalance={() => setBalanceHidden((hidden) => !hidden)}
+          />
+        )}
+        {activeNav === "Transactions" && (
+          <TransactionsScreen
+            selectedAccountId={selectedAccount}
+            onSelectAccount={setSelectedAccount}
+          />
+        )}
+        {activeNav === "Profile" && (
+          <ProfilePage
+            profile={profile}
+            onProfileChange={setProfile}
+            transactions={overviewTransactions}
+            balanceHidden={balanceHidden}
+            onToggleBalance={() => setBalanceHidden((hidden) => !hidden)}
+            onResetPassword={() => setPasswordResetOpen(true)}
+            onViewTransactions={() => navigate("Transactions")}
+          />
+        )}
+      </DashboardLayout>
 
-      {/* DASHBOARD FRAME: Contains the sidebar and the current page. */}
-      <div className="reen-dashboard-frame relative flex">
-        {/* ── desktop sidebar ───────────────────────────────────── */}
-        <aside className="reen-dashboard-sidebar hidden md:flex flex-col w-[220px] xl:w-[240px] shrink-0 px-6 xl:px-[30px] pt-10 xl:pt-[64px] pb-10 min-h-screen">
-          <div className="mb-10 xl:mb-[60px]">
-            <img
-              src={imgLogo}
-              alt="Reen Bank"
-              className="h-14 xl:h-[64px] w-auto object-contain"
-            />
-          </div>
-          <nav className="flex flex-col gap-6 xl:gap-[28px] flex-1">
-            {navItems.map((item) => (
-              <NavButton
-                key={item.id}
-                item={item}
-                active={activeNav === item.id}
-                onClick={() => navigate(item.id)}
-              />
-            ))}
-          </nav>
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="reen-dashboard-logout flex items-center gap-10 cursor-pointer mt-auto"
-          >
-            <img src={imgFiRrArrowLeft} alt="" className="w-8 h-8 shrink-0" />
-            <span
-              className="text-[20px] leading-normal text-[#555]"
-              style={dmMedium}
-            >
-              Logout
-            </span>
-          </button>
-        </aside>
-
-        {/* ── main ──────────────────────────────────────────────── */}
-        <main className="reen-dashboard-main flex-1 min-w-0 px-4 md:px-5 xl:px-5 pt-5 md:pt-10 xl:pt-[64px] pb-10">
-          {/* mobile page title */}
-          <h1
-            className="md:hidden text-[28px] font-bold text-[#252525] mb-5"
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontVariationSettings: '"opsz" 14',
-            }}
-          >
-            {pageTitle[activeNav]}
-          </h1>
-
-          {/* desktop top bar */}
-          <TopBar title={pageTitle[activeNav]} profile={profile} />
-
-          {/* screens */}
-          {activeNav === "Overview" && (
-            <OverviewScreen
-              balanceHidden={balanceHidden}
-              onToggleBalance={() => setBalanceHidden(!balanceHidden)}
-              onNavigate={navigate}
-            />
-          )}
-
-          {activeNav === "Accounts" && (
-            <AccountsScreen
-              selectedAccountId={selectedAccount}
-              onSelectAccount={setSelectedAccount}
-              balanceHidden={balanceHidden}
-              onToggleBalance={() => setBalanceHidden(!balanceHidden)}
-            />
-          )}
-
-          {activeNav === "Transactions" && (
-            <TransactionsScreen
-              selectedAccountId={selectedAccount}
-              onSelectAccount={setSelectedAccount}
-            />
-          )}
-
-          {/* APP: Profile page — layout and editing live in ProfilePage.tsx. */}
-          {activeNav === "Profile" && (
-            <ProfilePage
-              profile={profile}
-              onProfileChange={setProfile}
-              transactions={overviewTransactions}
-              balanceHidden={balanceHidden}
-              onToggleBalance={() => setBalanceHidden((hidden) => !hidden)}
-              onResetPassword={() => setPasswordResetOpen(true)}
-              onViewTransactions={() => navigate("Transactions")}
-            />
-          )}
-        </main>
-      </div>
-
+      {/* OVERLAYS: App controls these independently of the selected page. */}
       {logoutOpen && (
         <LogoutOverlay
           onCancel={() => setLogoutOpen(false)}
           onConfirm={confirmLogout}
         />
       )}
-
       {passwordResetOpen && (
         <PasswordResetOverlay onDismiss={() => setPasswordResetOpen(false)} />
       )}
-    </div>
+    </>
   );
 }
