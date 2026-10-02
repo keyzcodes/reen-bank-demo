@@ -1,5 +1,4 @@
-import type { AccountId } from "../data";
-import { accounts } from "../data";
+import type { Account, AccountId } from "../data";
 import {
   calculateBalance,
   formatNaira,
@@ -15,6 +14,8 @@ type AccountTransaction = BankTransaction & {
 };
 
 type AccountsScreenProps = {
+  // SHARED ACCOUNTS: App supplies the list, including newly created accounts.
+  accounts: readonly Account[];
   selectedAccountId: AccountId;
   onSelectAccount: (accountId: AccountId) => void;
   balanceHidden: boolean;
@@ -38,6 +39,7 @@ const statusLabels: Record<BankTransaction["status"], string> = {
 };
 
 export default function AccountsScreen({
+  accounts,
   selectedAccountId,
   onSelectAccount,
   balanceHidden,
@@ -103,11 +105,7 @@ export default function AccountsScreen({
               aria-pressed={balanceHidden}
             >
               <img
-                src={
-                  balanceHidden
-                    ? "/assets/dc3ce.svg"
-                    : "/assets/b8200.svg"
-                }
+                src={balanceHidden ? "/assets/dc3ce.svg" : "/assets/b8200.svg"}
                 alt=""
               />
             </button>
@@ -181,10 +179,7 @@ export default function AccountsScreen({
               const credit = transaction.kind === "deposit";
 
               return (
-                <li
-                  key={transaction.id}
-                  className="reen-account-transaction"
-                >
+                <li key={transaction.id} className="reen-account-transaction">
                   {/* TRANSACTION SYMBOL:
                       Plus/minus is rendered as text until the exact
                       exported symbol assets have been mapped. */}

@@ -1,0 +1,351 @@
+/* FUND WALLET: Mobile adaptation.
+   Desktop geometry below follows the supplied Figma measurements. */
+.reen-fund-dialog {
+  box-sizing: border-box;
+  width: min(560px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 32px 24px;
+  overflow-y: auto;
+  border: 0;
+  border-radius: 32px;
+  background: #fff;
+  color: #252525;
+  font-family: "DM Sans", sans-serif;
+  box-shadow: 0 0 200px 25px rgb(51 183 134 / 25%);
+  opacity: 1;
+  animation: reen-fund-dissolve 300ms ease-out;
+  transition: opacity 300ms ease-out;
+}
+
+/* BACKDROP: Adapted presentation; its opacity was not measured in Figma. */
+.reen-fund-dialog::backdrop {
+  background: rgb(0 0 0 / 20%);
+  animation: reen-fund-dissolve 300ms ease-out;
+  transition: opacity 300ms ease-out;
+}
+
+.reen-fund-dialog.is-closing,
+.reen-fund-dialog.is-closing::backdrop {
+  opacity: 0;
+}
+
+.reen-fund-title {
+  margin: 0 0 32px;
+  color: #33b786;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.14;
+}
+
+/* PAYMENT OPTIONS: Custom radio appearance with native radio semantics. */
+.reen-fund-methods {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.reen-fund-methods legend,
+.reen-fund-amount > label {
+  display: block;
+  margin-bottom: 8px;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 21px;
+}
+
+.reen-fund-method-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.reen-fund-method {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+  height: 52px;
+  border: 1px solid #8a8a8a;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 0 50px 0.5px rgb(0 0 0 / 5%);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 21px;
+  white-space: nowrap;
+}
+
+.reen-fund-method input {
+  appearance: none;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border: 1px solid #8a8a8a;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.reen-fund-method input:checked {
+  background:
+    radial-gradient(circle, #e74f5b 0 6px, transparent 6px);
+}
+
+.reen-fund-amount {
+  margin-top: 24px;
+}
+
+.reen-fund-amount > input {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 52px;
+  padding: 12px;
+  border: 1px solid #8a8a8a;
+  border-radius: 12px;
+  background: #fff;
+  color: #252525;
+  font: 700 16px / 21px "DM Sans", sans-serif;
+  box-shadow: 0 0 50px 0.5px rgb(0 0 0 / 5%);
+}
+
+.reen-fund-amount > input::placeholder {
+  color: #b8b8b8;
+  opacity: 1;
+}
+
+.reen-fund-error {
+  margin: 12px 0 0;
+  color: #b42318;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.reen-fund-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.reen-fund-actions button,
+.reen-fund-back {
+  height: 52px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 12px;
+  font: 700 18px / 31px "DM Sans", sans-serif;
+  cursor: pointer;
+}
+
+.reen-fund-cancel {
+  background: #d4d4d4;
+  color: #252525;
+}
+
+.reen-fund-submit,
+.reen-fund-back {
+  background: #33b786;
+  color: #fff;
+}
+
+.reen-fund-dialog button:disabled {
+  cursor: default;
+}
+
+.reen-fund-dialog button:focus-visible,
+.reen-fund-dialog input:focus-visible {
+  outline: 2px solid #269e73;
+  outline-offset: 3px;
+}
+
+/* CONFIRMATION:
+   Reuses the supplied confirmation card geometry.
+   GIF placement is an adaptation until its exact geometry is verified. */
+.reen-fund-dialog.is-confirmed {
+  width: min(697px, calc(100vw - 32px));
+  box-shadow: 0 0 150px 25px rgb(51 183 134 / 25%);
+}
+
+.reen-fund-success {
+  text-align: center;
+}
+
+.reen-fund-success-image {
+  display: block;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 20px;
+  object-fit: contain;
+}
+
+.reen-fund-success h2 {
+  margin: 0;
+  color: #6c6c6c;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.reen-fund-success h2 > span {
+  color: #33b786;
+}
+
+.reen-fund-back {
+  display: block;
+  width: 100%;
+  margin-top: 32px;
+}
+
+/* DESKTOP: Scale Figma pixels proportionally below 1920px.
+   Direct Pay card: 560 x 559.
+   Fields: 400 x 64. Options/buttons: 180 x 64.
+   Position offsets follow the visible reference; some were derived visually. */
+@media (min-width: 1024px) {
+  .reen-fund-dialog {
+    --fund-unit: min(0.0520833333vw, 1px);
+    position: fixed;
+    width: calc(560 * var(--fund-unit));
+    height: calc(559 * var(--fund-unit));
+    padding: 0;
+    border-radius: calc(32 * var(--fund-unit));
+  }
+
+  .reen-fund-title {
+    position: absolute;
+    top: calc(64 * var(--fund-unit));
+    left: calc(60 * var(--fund-unit));
+    margin: 0;
+    font-size: calc(48 * var(--fund-unit));
+    line-height: calc(55 * var(--fund-unit));
+  }
+
+  .reen-fund-methods {
+    position: absolute;
+    top: calc(150 * var(--fund-unit));
+    left: calc(60 * var(--fund-unit));
+    width: calc(400 * var(--fund-unit));
+  }
+
+  .reen-fund-methods legend,
+  .reen-fund-amount > label {
+    margin-bottom: calc(7 * var(--fund-unit));
+    font-size: calc(16 * var(--fund-unit));
+    line-height: calc(21 * var(--fund-unit));
+  }
+
+  .reen-fund-method-options,
+  .reen-fund-actions {
+    gap: calc(40 * var(--fund-unit));
+  }
+
+  .reen-fund-method {
+    height: calc(64 * var(--fund-unit));
+    gap: calc(8 * var(--fund-unit));
+    border-radius: calc(12 * var(--fund-unit));
+    font-size: calc(16 * var(--fund-unit));
+    line-height: calc(21 * var(--fund-unit));
+  }
+
+  .reen-fund-method input {
+    width: calc(16 * var(--fund-unit));
+    height: calc(16 * var(--fund-unit));
+  }
+
+  .reen-fund-method input:checked {
+    background: radial-gradient(
+      circle,
+      #e74f5b 0 calc(6 * var(--fund-unit)),
+      transparent calc(6 * var(--fund-unit))
+    );
+  }
+
+  .reen-fund-amount {
+    position: absolute;
+    top: calc(262 * var(--fund-unit));
+    left: calc(60 * var(--fund-unit));
+    width: calc(400 * var(--fund-unit));
+    margin: 0;
+  }
+
+  .reen-fund-amount > label {
+    margin-bottom: calc(17 * var(--fund-unit));
+  }
+
+  .reen-fund-amount > input {
+    height: calc(64 * var(--fund-unit));
+    padding: calc(12 * var(--fund-unit)) calc(4 * var(--fund-unit));
+    border-radius: calc(12 * var(--fund-unit));
+    font-size: calc(16 * var(--fund-unit));
+    line-height: calc(21 * var(--fund-unit));
+  }
+
+  .reen-fund-error {
+    position: absolute;
+    top: calc(370 * var(--fund-unit));
+    left: calc(60 * var(--fund-unit));
+    width: calc(400 * var(--fund-unit));
+    margin: 0;
+    font-size: calc(14 * var(--fund-unit));
+    line-height: 1.2;
+  }
+
+  .reen-fund-actions {
+    position: absolute;
+    top: calc(406 * var(--fund-unit));
+    left: calc(60 * var(--fund-unit));
+    width: calc(400 * var(--fund-unit));
+    margin: 0;
+  }
+
+  .reen-fund-actions button,
+  .reen-fund-back {
+    height: calc(64 * var(--fund-unit));
+    border-radius: calc(12 * var(--fund-unit));
+    font-size: calc(24 * var(--fund-unit));
+    line-height: calc(31 * var(--fund-unit));
+  }
+
+  .reen-fund-dialog.is-confirmed {
+    width: calc(697 * var(--fund-unit));
+    height: calc(479 * var(--fund-unit));
+  }
+
+  .reen-fund-success {
+    padding: calc(32 * var(--fund-unit)) calc(80 * var(--fund-unit));
+  }
+
+  .reen-fund-success-image {
+    width: calc(200 * var(--fund-unit));
+    height: calc(200 * var(--fund-unit));
+    margin-bottom: calc(24 * var(--fund-unit));
+  }
+
+  .reen-fund-success h2 {
+    font-size: calc(24 * var(--fund-unit));
+    line-height: calc(31 * var(--fund-unit));
+  }
+
+  .reen-fund-back {
+    margin-top: calc(56 * var(--fund-unit));
+  }
+}
+
+@keyframes reen-fund-dissolve {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reen-fund-dialog,
+  .reen-fund-dialog::backdrop {
+    animation: none;
+    transition: none;
+  }
+}

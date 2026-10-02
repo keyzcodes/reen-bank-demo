@@ -1,0 +1,242 @@
+/* ADD ACCOUNT: Mobile adaptation.
+   Desktop measurements come from Figma.
+   Mobile uses smaller text and fields with safe space at both sides. */
+.reen-add-dialog {
+  box-sizing: border-box;
+  width: min(560px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 32px 24px;
+  overflow-y: auto;
+  border: 0;
+  border-radius: 32px;
+  background: #fff;
+  color: #252525;
+  font-family: "DM Sans", sans-serif;
+  box-shadow: 0 0 200px 25px rgb(51 183 134 / 25%);
+  opacity: 1;
+  animation: reen-add-dissolve 300ms ease-out;
+  transition: opacity 300ms ease-out;
+}
+
+/* BACKDROP: The exact Figma overlay dimming value was not supplied.
+   This restrained tint is an implementation choice. */
+.reen-add-dialog::backdrop {
+  background: rgb(0 0 0 / 20%);
+  animation: reen-add-dissolve 300ms ease-out;
+  transition: opacity 300ms ease-out;
+}
+
+.reen-add-dialog.is-closing,
+.reen-add-dialog.is-closing::backdrop {
+  opacity: 0;
+}
+
+.reen-add-dialog h2 {
+  margin: 0 0 32px;
+  color: #33b786;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.14;
+  letter-spacing: 0;
+}
+
+.reen-add-dialog label {
+  display: block;
+  margin-bottom: 9px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 21px;
+}
+
+.reen-add-dialog input,
+.reen-add-dialog textarea {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  padding: 16px 20px;
+  border: 1px solid #8a8a8a;
+  border-radius: 12px;
+  background: #fff;
+  color: #252525;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 21px;
+  box-shadow: 0 0 50px 0.5px rgb(0 0 0 / 5%);
+}
+
+.reen-add-dialog input {
+  height: 52px;
+}
+
+.reen-add-dialog textarea {
+  height: 140px;
+  resize: none;
+}
+
+.reen-add-dialog input::placeholder,
+.reen-add-dialog textarea::placeholder {
+  color: #b8b8b8;
+  opacity: 1;
+}
+
+.reen-add-description-field {
+  margin-top: 24px;
+}
+
+.reen-add-dialog-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 32px;
+}
+
+.reen-add-dialog-actions button {
+  min-width: 0;
+  height: 52px;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* CANCEL: Transparent to match the visible design.
+   The listed grey fill's visibility/opacity remains unverified. */
+.reen-add-cancel {
+  background: transparent;
+  color: #252525;
+}
+
+.reen-add-submit {
+  background: #33b786;
+  color: #fff;
+}
+
+.reen-add-dialog button:disabled {
+  cursor: wait;
+}
+
+.reen-add-dialog input:focus-visible,
+.reen-add-dialog textarea:focus-visible,
+.reen-add-dialog button:focus-visible {
+  outline: 2px solid #269e73;
+  outline-offset: 3px;
+}
+
+.reen-add-error {
+  margin: 16px 0 0;
+  color: #b42318;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* DESKTOP GEOMETRY:
+   At 1920px viewport width, one unit equals one Figma pixel.
+   Field offsets are calculated relative to the supplied card coordinates. */
+@media (min-width: 1024px) {
+  .reen-add-dialog {
+    --add-unit: min(0.0520833333vw, 1px);
+    position: fixed;
+    width: calc(560 * var(--add-unit));
+    height: calc(675 * var(--add-unit));
+    padding: 0;
+    border-radius: calc(32 * var(--add-unit));
+  }
+
+  .reen-add-dialog h2 {
+    position: absolute;
+    top: calc(128 * var(--add-unit));
+    left: calc(71 * var(--add-unit));
+    margin: 0;
+    font-size: calc(48 * var(--add-unit));
+    line-height: calc(55 * var(--add-unit));
+  }
+
+  .reen-add-name-field,
+  .reen-add-description-field {
+    position: absolute;
+    left: calc(71 * var(--add-unit));
+    width: calc(400 * var(--add-unit));
+    margin: 0;
+  }
+
+  .reen-add-name-field {
+    top: calc(220 * var(--add-unit));
+  }
+
+  .reen-add-description-field {
+    top: calc(337 * var(--add-unit));
+  }
+
+  .reen-add-dialog label {
+    margin-bottom: calc(7 * var(--add-unit));
+    font-size: calc(16 * var(--add-unit));
+    line-height: calc(21 * var(--add-unit));
+  }
+
+  .reen-add-dialog input,
+  .reen-add-dialog textarea {
+    padding: calc(21 * var(--add-unit)) calc(24 * var(--add-unit));
+    border-radius: calc(12 * var(--add-unit));
+    font-size: calc(16 * var(--add-unit));
+    line-height: calc(21 * var(--add-unit));
+  }
+
+  .reen-add-dialog input {
+    height: calc(64 * var(--add-unit));
+  }
+
+  .reen-add-dialog textarea {
+    height: calc(180 * var(--add-unit));
+  }
+
+  .reen-add-dialog-actions {
+    position: absolute;
+    top: calc(587 * var(--add-unit));
+    left: calc(71 * var(--add-unit));
+    width: calc(400 * var(--add-unit));
+    gap: calc(40 * var(--add-unit));
+    margin: 0;
+  }
+
+  .reen-add-dialog-actions button {
+    height: calc(64 * var(--add-unit));
+    border-radius: calc(12 * var(--add-unit));
+    font-size: calc(24 * var(--add-unit));
+    line-height: calc(31 * var(--add-unit));
+  }
+
+  /* ERROR: Added functional state, not a supplied Figma screen. */
+  .reen-add-error {
+    position: absolute;
+    top: calc(551 * var(--add-unit));
+    left: calc(71 * var(--add-unit));
+    width: calc(400 * var(--add-unit));
+    margin: 0;
+    font-size: calc(14 * var(--add-unit));
+    line-height: 1.2;
+  }
+}
+
+@keyframes reen-add-dissolve {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reen-add-dialog,
+  .reen-add-dialog::backdrop {
+    animation: none;
+    transition: none;
+  }
+}

@@ -1,8 +1,12 @@
-export type AccountId = "main" | "school" | "holiday";
+// ACCOUNT ID: Supports the existing accounts and newly created accounts.
+// Each new account receives a unique ID when the user submits the form.
+export type AccountId = string;
 
 export interface Account {
   id: AccountId;
   label: string;
+  // ACCOUNT DESCRIPTION: Optional details entered in the Add Account form.
+description?: string;
   balance: string;
   balanceRaw: number;
   number: string;
