@@ -61,27 +61,55 @@ const navItems: { id: NavItem; label: string }[] = [
   { id: "Profile", label: "Profile" },
 ];
 
-function navIcon(id: NavItem) {
-  if (id === "Overview")
-    return <img src={imgFiSrApps} alt="" className="w-8 h-8 shrink-0" />;
-  if (id === "Accounts")
-    return <img src={imgFiRrCreditCard} alt="" className="w-8 h-8 shrink-0" />;
-  if (id === "Transactions")
+/* NAVIGATION: Select the exact exported Figma icon for each state.
+   Green icons show the selected page; grey icons show other pages.
+   Keep the existing sizing and positioning unchanged. */
+function navIcon(id: NavItem, active: boolean) {
+  if (id === "Overview") {
     return (
-      <div className="relative w-8 h-8 shrink-0">
+      <img
+        src={active ? "/assets/5d2cf.svg" : "/assets/8b96e.svg"}
+        alt=""
+        className="w-8 h-8 shrink-0"
+      />
+    );
+  }
+
+  if (id === "Accounts") {
+    return (
+      <img
+        src={active ? "/assets/1013a.svg" : "/assets/6e619.svg"}
+        alt=""
+        className="w-8 h-8 shrink-0"
+      />
+    );
+  }
+
+  if (id === "Transactions") {
+    return (
+      /* NAVIGATION: Preserve the two-arrow icon's existing geometry. */
+      <div className="reen-transactions-icon relative w-8 h-8 shrink-0">
         <img
-          src={imgFiRrArrowSmallLeft}
+          src={active ? "/assets/61884.svg" : "/assets/c2da1.svg"}
           alt=""
           className="absolute top-0 left-0 w-[25.56px] h-[25.56px]"
         />
         <img
-          src={imgFiRrArrowSmallRight}
+          src={active ? "/assets/6a560.svg" : "/assets/d3423.svg"}
           alt=""
           className="absolute bottom-0 right-0 w-[25.56px] h-[25.56px]"
         />
       </div>
     );
-  return <img src={imgFiRrUser} alt="" className="w-8 h-8 shrink-0" />;
+  }
+
+  return (
+    <img
+      src={active ? "/assets/c490e.svg" : "/assets/136ba.svg"}
+      alt=""
+      className="w-8 h-8 shrink-0"
+    />
+  );
 }
 
 /* ── NavButton ───────────────────────────────────────────────────── */
@@ -103,7 +131,7 @@ function NavButton({
         compact ? "gap-3 px-3 py-2 rounded-lg" : "gap-10"
       } ${compact && active ? "bg-[#33b786]/10" : ""}`}
     >
-      {navIcon(item.id)}
+      {navIcon(item.id, active)}
       <span
         className="text-[20px] leading-normal whitespace-nowrap"
         style={{
@@ -117,8 +145,9 @@ function NavButton({
   );
 }
 
-/* ── TopBar ──────────────────────────────────────────────────────── */
-// HEADER: Read the same saved profile used by the Profile page.
+/* DASHBOARD HEADER:
+   Customer details and the small avatar use the saved profile state.
+   Profile desktop CSS aligns these groups with the columns below. */
 function TopBar({
   title,
   profile,
@@ -127,20 +156,25 @@ function TopBar({
   profile: CustomerProfile;
 }) {
   return (
-    <div className="hidden md:flex items-start justify-between flex-wrap gap-4 mb-6 md:mb-8 xl:mb-[100px]">
+    <div className="reen-dashboard-header hidden md:flex items-start justify-between flex-wrap gap-4 mb-6 md:mb-8 xl:mb-[100px]">
+      {/* HEADER TITLE: Aligned with the white card on Profile desktop. */}
       <h1
-        className="text-[32px] xl:text-[40px] leading-normal text-[#252525]"
+        className="reen-dashboard-title text-[32px] xl:text-[40px] leading-normal text-[#252525]"
         style={dmBold}
       >
         {title}
       </h1>
-      <div className="flex flex-col items-center">
+
+      {/* HEADER CUSTOMER: Right edge matches the white card's right edge.
+          The account number is still a demo value. */}
+      <div className="reen-dashboard-customer flex flex-col items-center">
         <span
           className="text-sm xl:text-[16px] text-[#33b786] leading-normal"
           style={dmMedium}
         >
           {profile.name}
         </span>
+
         <span
           className="text-[32px] xl:text-[40px] text-[#252525] not-italic"
           style={bebasNum}
@@ -148,24 +182,34 @@ function TopBar({
           1234567890
         </span>
       </div>
-      <div className="flex flex-1 min-w-[220px] max-w-[481px] items-center gap-4 xl:gap-6">
-        <div className="mr-auto flex items-center gap-3">
+
+      {/* HEADER TOOLS: Search starts above the right panel.
+          The avatar ends at the right panel's right edge. */}
+      <div className="reen-dashboard-tools flex flex-1 min-w-[220px] max-w-[481px] items-center gap-4 xl:gap-6">
+        <div className="reen-dashboard-search mr-auto flex items-center gap-3">
           <img src={imgFiRrSearch} alt="" className="w-6 h-6" />
+
           <span className="text-[16px] text-[#8c8c8c]" style={dmMedium}>
             Search
           </span>
         </div>
-        <button className="cursor-pointer">
-          <img
-            src={imgNotificationBell}
-            alt="Notifications"
-            className="w-6 h-6"
-          />
+
+        <button
+          type="button"
+          aria-label="Notifications"
+          className="reen-dashboard-notifications cursor-pointer"
+        >
+          <img src={imgNotificationBell} alt="" className="w-6 h-6" />
         </button>
-        <button className="cursor-pointer">
+
+        <button
+          type="button"
+          aria-label="Profile"
+          className="reen-dashboard-avatar cursor-pointer"
+        >
           <img
             src={profile.avatar}
-            alt="Profile"
+            alt=""
             className="w-12 xl:w-[56px] h-12 xl:h-[56px] rounded-full object-cover"
           />
         </button>
@@ -504,7 +548,9 @@ export default function App() {
 
   return (
     <div
-      className="relative min-h-screen w-full overflow-x-hidden"
+      className={`relative min-h-screen w-full overflow-x-hidden ${
+        activeNav === "Profile" ? "reen-profile-shell" : ""
+      }`}
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
       {/* ── background ───────────────────────────────────────────── */}
@@ -538,7 +584,7 @@ export default function App() {
           </button>
           <button className="cursor-pointer">
             <img
-              src={imgEllipse32}
+              src={profile.avatar}
               alt="Profile"
               className="w-10 h-10 rounded-full object-cover"
             />
@@ -593,9 +639,10 @@ export default function App() {
         )}
       </header>
 
-      <div className="relative flex">
+      {/* DASHBOARD FRAME: Contains the sidebar and the current page. */}
+      <div className="reen-dashboard-frame relative flex">
         {/* ── desktop sidebar ───────────────────────────────────── */}
-        <aside className="hidden md:flex flex-col w-[220px] xl:w-[240px] shrink-0 px-6 xl:px-[30px] pt-10 xl:pt-[64px] pb-10 min-h-screen">
+        <aside className="reen-dashboard-sidebar hidden md:flex flex-col w-[220px] xl:w-[240px] shrink-0 px-6 xl:px-[30px] pt-10 xl:pt-[64px] pb-10 min-h-screen">
           <div className="mb-10 xl:mb-[60px]">
             <img
               src={imgLogo}
@@ -616,7 +663,7 @@ export default function App() {
           <button
             type="button"
             onClick={handleLogout}
-            className="flex items-center gap-10 cursor-pointer mt-auto"
+            className="reen-dashboard-logout flex items-center gap-10 cursor-pointer mt-auto"
           >
             <img src={imgFiRrArrowLeft} alt="" className="w-8 h-8 shrink-0" />
             <span
@@ -629,7 +676,7 @@ export default function App() {
         </aside>
 
         {/* ── main ──────────────────────────────────────────────── */}
-        <main className="flex-1 min-w-0 px-4 md:px-5 xl:px-5 pt-5 md:pt-10 xl:pt-[64px] pb-10">
+        <main className="reen-dashboard-main flex-1 min-w-0 px-4 md:px-5 xl:px-5 pt-5 md:pt-10 xl:pt-[64px] pb-10">
           {/* mobile page title */}
           <h1
             className="md:hidden text-[28px] font-bold text-[#252525] mb-5"

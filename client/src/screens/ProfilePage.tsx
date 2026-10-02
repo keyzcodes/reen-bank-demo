@@ -260,9 +260,13 @@ export default function ProfilePage({
           </button>
         </section>
 
+        {/* PROFILE TRANSACTIONS:
+    Display eight existing demo rows.
+    Desktop measurements follow the verified Figma reference. */}
         <section className="reen-profile-transactions">
           <div className="reen-profile-transactions-heading">
             <h2>Transactions</h2>
+
             <button
               type="button"
               onClick={onViewTransactions}
@@ -272,20 +276,26 @@ export default function ProfilePage({
             </button>
           </div>
 
-          {/* PROFILE: Existing fixture rows, not database transactions yet. */}
-          {transactions.slice(0, 8).map((transaction) => (
-            <div className="reen-profile-transaction" key={transaction.id}>
-              <span>{transaction.name}</span>
-              <time>{transaction.date}</time>
-              <strong
-                className={
-                  transaction.type === "credit" ? "is-credit" : "is-debit"
-                }
-              >
-                {transaction.amount}
-              </strong>
-            </div>
-          ))}
+          {/* TRANSACTION LIST:
+      A separate wrapper controls spacing between rows.
+      These are fixture transactions; backend integration comes later. */}
+          <div className="reen-profile-transaction-list">
+            {transactions.slice(0, 8).map((transaction) => (
+              <div className="reen-profile-transaction" key={transaction.id}>
+                <span>{transaction.name}</span>
+
+                <time>{transaction.date}</time>
+
+                <strong
+                  className={
+                    transaction.type === "credit" ? "is-credit" : "is-debit"
+                  }
+                >
+                  {transaction.amount}
+                </strong>
+              </div>
+            ))}
+          </div>
         </section>
       </aside>
     </div>

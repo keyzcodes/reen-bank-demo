@@ -3,6 +3,8 @@
 .reen-profile-page {
   display: grid;
   gap: 32px;
+  /* PROFILE: Keep each column at its own content height. */
+  align-items: start;
   min-width: 0;
   font-family: "DM Sans", sans-serif;
   color: #252525;
@@ -225,8 +227,12 @@
   font-weight: 400;
 }
 
-.reen-profile-transaction .is-credit { color: #33b786; }
-.reen-profile-transaction .is-debit { color: #e74f5b; }
+.reen-profile-transaction .is-credit {
+  color: #33b786;
+}
+.reen-profile-transaction .is-debit {
+  color: #e74f5b;
+}
 
 /* PROFILE: Editing controls — added functionality, not a supplied Figma screen. */
 .reen-profile-editor {
@@ -417,5 +423,387 @@
   .reen-profile-transaction strong {
     grid-column: auto;
     grid-row: auto;
+  }
+}
+/* PROFILE DESKTOP FRAME:
+   Reference: 1920 x 1080.
+   One unit equals one Figma pixel at a 1920px browser width.
+   Smaller desktop windows scale the measurements proportionally.
+   Height remains content-driven, so longer content can scroll. */
+@media (min-width: 1024px) {
+  .reen-profile-shell {
+    --dashboard-unit: min(0.0520833333vw, 1px);
+    max-width: 1920px;
+    margin-inline: auto;
+  }
+
+  /* PROFILE SIDEBAR:
+     Reserve space up to x=491 for the page header.
+     Logo position: x=120, y=64. */
+  .reen-profile-shell .reen-dashboard-sidebar {
+    flex: 0 0 calc(491 * var(--dashboard-unit));
+    width: calc(491 * var(--dashboard-unit));
+    min-height: calc(1080 * var(--dashboard-unit));
+    padding: calc(64 * var(--dashboard-unit)) 0 calc(64 * var(--dashboard-unit))
+      calc(120 * var(--dashboard-unit));
+  }
+
+  .reen-profile-shell .reen-dashboard-sidebar > div:first-child {
+    margin-bottom: calc(120 * var(--dashboard-unit));
+  }
+
+  .reen-profile-shell .reen-dashboard-sidebar > div:first-child img {
+    width: calc(273 * var(--dashboard-unit));
+    height: calc(64 * var(--dashboard-unit));
+  }
+
+  /* PROFILE NAVIGATION:
+     First icon starts at y=248.
+     Each 32px row is followed by a 40px gap. */
+  .reen-profile-shell .reen-dashboard-sidebar nav {
+    gap: calc(40 * var(--dashboard-unit));
+  }
+
+  .reen-profile-shell .reen-dashboard-sidebar button {
+    gap: calc(40 * var(--dashboard-unit));
+  }
+
+  .reen-profile-shell .reen-dashboard-sidebar button > img,
+  .reen-profile-shell .reen-dashboard-sidebar button > div {
+    width: calc(32 * var(--dashboard-unit));
+    height: calc(32 * var(--dashboard-unit));
+  }
+
+/* PROFILE NAVIGATION TEXT:
+   Reference size: 20px font with a 26px text box.
+   Scale consistently with the desktop layout. */
+.reen-profile-shell .reen-dashboard-sidebar button > span {
+  font-size: calc(20 * var(--dashboard-unit));
+  line-height: calc(26 * var(--dashboard-unit));
+}
+
+/* PROFILE TRANSACTIONS ICON:
+   Scale the two inner arrows with their wrapper.
+   This rule must sit outside the navigation text rule. */
+.reen-profile-shell .reen-dashboard-sidebar nav button > div > img {
+  width: calc(25.56 * var(--dashboard-unit));
+  height: calc(25.56 * var(--dashboard-unit));
+}
+
+  /* PROFILE MAIN:
+     Main starts at x=491.
+     Width 1332 reaches the right panel's ending at x=1823.
+     Do not add another fixed padding layer around the page. */
+  .reen-profile-shell .reen-dashboard-main {
+    flex: 0 0 calc(1332 * var(--dashboard-unit));
+    width: calc(1332 * var(--dashboard-unit));
+    padding: calc(64 * var(--dashboard-unit)) 0 calc(62 * var(--dashboard-unit));
+  }
+
+  /* PROFILE HEADER GRID:
+     Middle header column = 21px inset + 702px white card.
+     Right column = 481px panel, separated by a 128px gap.
+     A 126px header places the white card at y=190. */
+  .reen-profile-shell .reen-dashboard-header {
+    display: grid;
+    grid-template-columns:
+      calc(723 * var(--dashboard-unit))
+      calc(481 * var(--dashboard-unit));
+    grid-template-rows: auto;
+    column-gap: calc(128 * var(--dashboard-unit));
+    row-gap: 0;
+    align-items: start;
+    height: calc(126 * var(--dashboard-unit));
+    margin: 0;
+  }
+
+  /* PROFILE TITLE:
+   Verified Figma position: x=491, y=71.
+   The white card starts at x=512, so the title sits 21px to its left. */
+.reen-profile-shell .reen-dashboard-title {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  margin: calc(7 * var(--dashboard-unit)) 0 0;
+  font-size: calc(40 * var(--dashboard-unit));
+  line-height: calc(52 * var(--dashboard-unit));
+}
+
+  /* PROFILE CUSTOMER DETAILS:
+     Anchor both text lines to the white card's right edge.
+     Name starts at y=75; number starts at y=100. */
+  .reen-profile-shell .reen-dashboard-customer {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: end;
+    align-items: flex-end;
+    min-width: 0;
+    max-width: calc(400 * var(--dashboard-unit));
+    margin-top: calc(11 * var(--dashboard-unit));
+    text-align: right;
+  }
+
+  .reen-profile-shell .reen-dashboard-customer > span:first-child {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    font-size: calc(16 * var(--dashboard-unit));
+    line-height: calc(21 * var(--dashboard-unit));
+  }
+
+  .reen-profile-shell .reen-dashboard-customer > span:last-child {
+    margin-top: calc(4 * var(--dashboard-unit));
+    font-size: calc(40 * var(--dashboard-unit));
+    line-height: calc(48 * var(--dashboard-unit));
+  }
+
+  /* PROFILE HEADER TOOLS:
+     Avatar starts at y=95.
+     Search and bell are vertically centred within its 56px height. */
+  .reen-profile-shell .reen-dashboard-tools {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    gap: calc(40 * var(--dashboard-unit));
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    height: calc(56 * var(--dashboard-unit));
+    margin-top: calc(31 * var(--dashboard-unit));
+  }
+
+  .reen-profile-shell .reen-dashboard-search {
+    gap: calc(16 * var(--dashboard-unit));
+    margin-right: auto;
+  }
+
+  .reen-profile-shell .reen-dashboard-search img,
+  .reen-profile-shell .reen-dashboard-notifications img {
+    width: calc(24 * var(--dashboard-unit));
+    height: calc(24 * var(--dashboard-unit));
+  }
+
+  .reen-profile-shell .reen-dashboard-search span {
+    font-size: calc(16 * var(--dashboard-unit));
+    line-height: calc(21 * var(--dashboard-unit));
+  }
+
+  .reen-profile-shell .reen-dashboard-avatar img {
+    width: calc(56 * var(--dashboard-unit));
+    height: calc(56 * var(--dashboard-unit));
+  }
+
+  /* PROFILE CONTENT GRID:
+     White card: x=512, width=702.
+     Right panel: x=1342, width=481.
+     Each column keeps its own height instead of stretching its neighbour. */
+  .reen-profile-shell .reen-profile-page {
+    --profile-unit: var(--dashboard-unit);
+    grid-template-columns:
+      calc(702 * var(--profile-unit))
+      calc(481 * var(--profile-unit));
+    gap: calc(128 * var(--profile-unit));
+    align-items: start;
+    margin-left: calc(21 * var(--profile-unit));
+  }
+}
+/* PROFILE TRANSACTIONS ICON:
+   Verified Figma group: 38.56 x 31.56px, starting at x=117.
+   Other icons start at x=120.
+   Negative margins preserve the shared navigation-label alignment.
+   Inner arrows retain the existing corner arrangement pending visual review. */
+@media (min-width: 1024px) {
+  .reen-profile-shell .reen-dashboard-sidebar nav button > .reen-transactions-icon {
+    width: calc(38.56 * var(--dashboard-unit));
+    height: calc(31.56 * var(--dashboard-unit));
+    margin-left: calc(-3 * var(--dashboard-unit));
+    margin-right: calc(-3.56 * var(--dashboard-unit));
+  }
+
+  .reen-profile-shell .reen-dashboard-sidebar nav button > .reen-transactions-icon > img {
+    width: calc(25.5601 * var(--dashboard-unit));
+    height: calc(25.5601 * var(--dashboard-unit));
+  }
+}
+/* PROFILE LOGOUT POSITION:
+   Verified Figma group: x=120, y=984, width=137, height=32.
+   Position relative to the sidebar, not the browser viewport.
+   Longer transaction content must not push Logout downward. */
+@media (min-width: 1024px) {
+  .reen-profile-shell .reen-dashboard-sidebar {
+    position: relative;
+    align-self: flex-start;
+  }
+
+  .reen-profile-shell .reen-dashboard-sidebar > .reen-dashboard-logout {
+    position: absolute;
+    top: calc(984 * var(--dashboard-unit));
+    left: calc(120 * var(--dashboard-unit));
+    width: calc(137 * var(--dashboard-unit));
+    height: calc(32 * var(--dashboard-unit));
+    margin: 0;
+    padding: 0;
+    gap: calc(40 * var(--dashboard-unit));
+    align-items: center;
+  }
+
+  /* PROFILE LOGOUT LABEL:
+     A 26px label centred inside the 32px group starts at y=987.
+     Icon width 32 + gap 40 places the label at x=192. */
+  .reen-profile-shell .reen-dashboard-logout > span {
+    font-size: calc(20 * var(--dashboard-unit));
+    line-height: calc(26 * var(--dashboard-unit));
+    font-weight: 500;
+    color: #555555;
+  }
+}
+/* PROFILE TRANSACTION GEOMETRY:
+   Section starts at y=469.
+   First row starts at y=528.
+   Each row is 29px tall, followed by a 32px gap.
+   Eight rows end at y=984, matching Logout's top.
+   All measurements scale with the existing desktop reference unit. */
+@media (min-width: 1024px) {
+  .reen-profile-shell .reen-profile-transactions {
+    margin-top: calc(96 * var(--profile-unit));
+  }
+
+  /* TRANSACTION HEADING:
+     A 40px heading/control row plus 19px below it
+     places the first transaction 59px after the section starts. */
+  .reen-profile-shell .reen-profile-transactions-heading {
+    height: calc(40 * var(--profile-unit));
+    margin-bottom: calc(19 * var(--profile-unit));
+  }
+
+  .reen-profile-shell .reen-profile-transactions-heading h2 {
+    font-size: calc(24 * var(--profile-unit));
+    line-height: calc(31 * var(--profile-unit));
+  }
+
+  .reen-profile-shell .reen-profile-transactions-heading button {
+    width: calc(40 * var(--profile-unit));
+    height: calc(40 * var(--profile-unit));
+  }
+
+  /* TRANSACTION LIST:
+     Gap belongs between rows, rather than inside row padding.
+     Do not set a fixed list height or hide overflowing content. */
+  .reen-profile-shell .reen-profile-transaction-list {
+    display: grid;
+    gap: calc(32 * var(--profile-unit));
+  }
+
+  /* TRANSACTION COLUMNS:
+     Name starts at x=1342.
+     Date starts 182px later, at x=1524.
+     Amount occupies the final 87px and ends at x=1823.
+     The 56px space after the date follows those verified coordinates. */
+  .reen-profile-shell .reen-profile-transaction {
+    position: relative;
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr)
+      calc(156 * var(--profile-unit))
+      calc(56 * var(--profile-unit))
+      calc(87 * var(--profile-unit));
+    align-items: center;
+    gap: 0;
+    height: calc(29 * var(--profile-unit));
+    padding: 0;
+    border: 0;
+    color: #8c8c8c;
+    font-size: calc(16 * var(--profile-unit));
+    font-weight: 500;
+    line-height: calc(21 * var(--profile-unit));
+  }
+
+  .reen-profile-shell .reen-profile-transaction > span {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .reen-profile-shell .reen-profile-transaction time {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: calc(16 * var(--profile-unit));
+    font-weight: 500;
+    line-height: calc(21 * var(--profile-unit));
+    white-space: nowrap;
+  }
+
+  .reen-profile-shell .reen-profile-transaction strong {
+    grid-column: 4;
+    grid-row: 1;
+    align-self: center;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: calc(24 * var(--profile-unit));
+    font-weight: 400;
+    line-height: calc(29 * var(--profile-unit));
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* TRANSACTION DIVIDERS:
+     Verified colour: #D9D9D9; thickness: 1px.
+     Placement midway through the gap is inferred:
+     the individual divider positions have not been measured. */
+  .reen-profile-shell .reen-profile-transaction:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(-16 * var(--profile-unit));
+    height: 1px;
+    background: #d9d9d9;
+  }
+}
+/* PROFILE DESKTOP EDITOR:
+   Editing has no supplied Figma reference.
+   Scale its controls with the desktop card and keep button labels on one line.
+   Mobile retains its existing sizes. */
+@media (min-width: 1024px) {
+  .reen-profile-shell .reen-profile-editor {
+    width: 100%;
+    min-width: 0;
+    max-width: calc(357 * var(--profile-unit));
+    gap: calc(16 * var(--profile-unit));
+    margin-top: calc(28 * var(--profile-unit));
+  }
+
+  .reen-profile-shell .reen-profile-editor label {
+    min-width: 0;
+    gap: calc(6 * var(--profile-unit));
+    font-size: max(12px, calc(14 * var(--profile-unit)));
+  }
+
+  /* EDITOR FIELDS:
+     Use compact desktop padding instead of the fixed mobile padding.
+     Keep controls at least 36px high for usability. */
+  .reen-profile-shell .reen-profile-editor input,
+  .reen-profile-shell .reen-profile-editor select {
+    min-height: max(36px, calc(44 * var(--profile-unit)));
+    padding: calc(8 * var(--profile-unit));
+    font-size: max(12px, calc(14 * var(--profile-unit)));
+  }
+
+  /* EDITOR ACTIONS:
+     Cancel uses its natural width; Save Changes takes the remaining space.
+     min-width: 0 lets both buttons fit inside the card. */
+  .reen-profile-shell .reen-profile-editor-actions {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: calc(10 * var(--profile-unit));
+  }
+
+  .reen-profile-shell .reen-profile-editor-actions button {
+    min-width: 0;
+    min-height: max(36px, calc(44 * var(--profile-unit)));
+    padding: calc(8 * var(--profile-unit))
+      calc(12 * var(--profile-unit));
+    font-size: max(12px, calc(14 * var(--profile-unit)));
+    line-height: 1.2;
+    white-space: nowrap;
   }
 }
