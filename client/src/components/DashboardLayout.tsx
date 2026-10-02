@@ -45,7 +45,11 @@ export default function DashboardLayout({
   return (
     <div
       className={`reen-dashboard-shell relative min-h-screen w-full overflow-x-hidden ${
-        activeNav === "Profile" ? "reen-profile-shell" : ""
+        activeNav === "Profile"
+  ? "reen-profile-shell"
+  : activeNav === "Overview"
+    ? "reen-overview-shell"
+    : ""
       }`}
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >

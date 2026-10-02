@@ -1,0 +1,534 @@
+/* ACCOUNTS: Mobile adaptation.
+   Figma provides a desktop reference; mobile uses readable stacked cards. */
+.reen-accounts-page {
+  min-width: 0;
+  color: #252525;
+  font-family: "DM Sans", sans-serif;
+}
+
+.reen-account-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+
+.reen-account-card,
+.reen-add-account {
+  position: relative;
+  min-width: 0;
+  height: 184px;
+  border: 0;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.reen-account-card {
+  background: #d4f3e7;
+}
+
+/* SELECTED ACCOUNT: Square strip, separate from the rounded background. */
+.reen-account-card.is-selected::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 8px;
+  background: #46237a;
+}
+
+.reen-account-select {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  right: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.reen-account-name {
+  color: #46237a;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21px;
+}
+
+.reen-account-balance,
+.reen-add-account-balance {
+  margin-top: 5px;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 38px;
+}
+
+.reen-account-visibility {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.reen-account-visibility img {
+  width: 16px;
+  height: 16px;
+}
+
+.reen-account-actions {
+  position: absolute;
+  top: 120px;
+  left: 32px;
+  display: flex;
+  gap: 17px;
+}
+
+.reen-account-actions button {
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+}
+
+.reen-account-fund {
+  width: 80px;
+  background: #33b786;
+  color: #fff;
+}
+
+.reen-account-withdraw {
+  width: 116px;
+  background: #d4d4d4;
+  color: #252525;
+}
+
+.reen-add-account {
+  padding: 0;
+  background: rgb(240 240 240 / 75%);
+  color: #555;
+  text-align: left;
+}
+
+.reen-add-account > img {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  width: 32px;
+  height: 32px;
+}
+
+.reen-add-account-label {
+  position: absolute;
+  top: 40px;
+  left: 104px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 21px;
+}
+
+.reen-add-account-balance {
+  position: absolute;
+  top: 115px;
+  left: 32px;
+  margin: 0;
+}
+
+/* TRANSACTIONS: No invented outer card border or shadow.
+   Figma's 1px lines separate individual rows. */
+.reen-account-transactions {
+  margin-top: 48px;
+}
+
+.reen-account-transactions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.reen-account-transactions-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 31px;
+}
+
+.reen-account-view-all {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #33b786;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.reen-account-view-all img {
+  width: 32px;
+  height: 32px;
+}
+
+.reen-account-empty {
+  margin: 40px 0 0;
+  color: #8c8c8c;
+  font-size: 16px;
+}
+
+.reen-account-transaction-list {
+  display: grid;
+  gap: 24px;
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reen-account-transaction {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.reen-account-transaction:last-child {
+  border-bottom: 0;
+}
+
+.reen-account-transaction-symbol {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 24px;
+}
+
+.reen-account-transaction-symbol.is-credit {
+  background: #33b786;
+}
+
+.reen-account-transaction-symbol.is-debit {
+  background: #e74f5b;
+}
+
+.reen-account-transaction-name,
+.reen-account-transaction-method,
+.reen-account-transaction-date {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: #8c8c8c;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+}
+
+.reen-account-transaction-method,
+.reen-account-transaction-date {
+  grid-column: 2;
+}
+
+.reen-account-transaction-amount {
+  grid-column: 3;
+  grid-row: 1;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 29px;
+  text-align: right;
+}
+
+.reen-account-transaction-amount.is-credit {
+  color: #33b786;
+}
+
+.reen-account-transaction-amount.is-debit {
+  color: #e74f5b;
+}
+
+.reen-account-transaction-status {
+  grid-column: 3;
+  grid-row: 2 / span 2;
+  display: grid;
+  place-items: center;
+  min-height: 32px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.reen-account-transaction-status.is-pending {
+  background: #d4d4d4;
+  color: #555;
+}
+
+.reen-account-transaction-status.is-completed {
+  background: #33b786;
+  color: #fff;
+}
+
+/* FAILED: Functional fallback, not a verified Figma Canceled state. */
+.reen-account-transaction-status.is-failed {
+  background: #e74f5b;
+  color: #fff;
+}
+
+.reen-accounts-page button:enabled {
+  cursor: pointer;
+}
+
+.reen-accounts-page button:disabled {
+  cursor: not-allowed;
+}
+
+.reen-accounts-page button:focus-visible {
+  outline: 2px solid #46237a;
+  outline-offset: 4px;
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .reen-account-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ACCOUNTS DESKTOP: Reference frame 1920 x 1080.
+   Shared main starts at x=491, y=190.
+   The content inset places the first card at x=497, y=247.
+   All dimensions scale using the shared dashboard unit. */
+@media (min-width: 1024px) {
+  .reen-accounts-page {
+    --account-unit: var(--dashboard-unit);
+    width: calc(1303 * var(--account-unit));
+    margin-left: calc(6 * var(--account-unit));
+    padding-top: calc(57 * var(--account-unit));
+  }
+
+  .reen-account-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: calc(65 * var(--account-unit));
+  }
+
+  .reen-account-card,
+  .reen-add-account {
+    height: calc(184 * var(--account-unit));
+    border-radius: calc(12 * var(--account-unit));
+  }
+
+  .reen-account-card.is-selected::before {
+    width: calc(8 * var(--account-unit));
+  }
+
+  .reen-account-select {
+    top: calc(32 * var(--account-unit));
+    left: calc(32 * var(--account-unit));
+    right: calc(60 * var(--account-unit));
+  }
+
+  .reen-account-name {
+    font-size: calc(16 * var(--account-unit));
+    line-height: calc(21 * var(--account-unit));
+    white-space: nowrap;
+  }
+
+  .reen-account-balance,
+  .reen-add-account-balance {
+    font-size: calc(32 * var(--account-unit));
+    line-height: calc(38 * var(--account-unit));
+    white-space: nowrap;
+  }
+
+  .reen-account-balance {
+    margin-top: calc(5 * var(--account-unit));
+  }
+
+  .reen-account-visibility {
+    top: calc(24 * var(--account-unit));
+    right: calc(24 * var(--account-unit));
+    width: calc(32 * var(--account-unit));
+    height: calc(32 * var(--account-unit));
+    padding: calc(8 * var(--account-unit));
+  }
+
+  .reen-account-visibility img {
+    width: calc(16 * var(--account-unit));
+    height: calc(16 * var(--account-unit));
+  }
+
+  .reen-account-actions {
+    top: calc(120 * var(--account-unit));
+    left: calc(32 * var(--account-unit));
+    gap: calc(17 * var(--account-unit));
+  }
+
+  .reen-account-actions button {
+    height: calc(32 * var(--account-unit));
+    border-radius: calc(6 * var(--account-unit));
+    font-size: calc(12 * var(--account-unit));
+    line-height: calc(16 * var(--account-unit));
+  }
+
+  .reen-account-fund {
+    width: calc(80 * var(--account-unit));
+  }
+
+  .reen-account-withdraw {
+    width: calc(116 * var(--account-unit));
+  }
+
+  .reen-add-account > img {
+    top: calc(32 * var(--account-unit));
+    left: calc(32 * var(--account-unit));
+    width: calc(32 * var(--account-unit));
+    height: calc(32 * var(--account-unit));
+  }
+
+  .reen-add-account-label {
+    top: calc(40 * var(--account-unit));
+    left: calc(104 * var(--account-unit));
+    font-size: calc(16 * var(--account-unit));
+    line-height: calc(21 * var(--account-unit));
+    white-space: nowrap;
+  }
+
+  /* ADD ACCOUNT BALANCE:
+     Vertical position provisionally retained from the existing visual.
+     Its text layer's exact position has not been supplied. */
+  .reen-add-account-balance {
+    top: calc(115 * var(--account-unit));
+    left: calc(32 * var(--account-unit));
+  }
+
+  .reen-account-transactions {
+    margin-top: calc(72 * var(--account-unit));
+  }
+
+  .reen-account-transactions-header {
+    height: calc(32 * var(--account-unit));
+  }
+
+  .reen-account-transactions-header h2 {
+    font-size: calc(24 * var(--account-unit));
+    line-height: calc(31 * var(--account-unit));
+  }
+
+  .reen-account-view-all {
+    gap: calc(16 * var(--account-unit));
+    font-size: calc(16 * var(--account-unit));
+    line-height: calc(21 * var(--account-unit));
+  }
+
+  .reen-account-view-all img {
+    width: calc(32 * var(--account-unit));
+    height: calc(32 * var(--account-unit));
+  }
+
+  /* TRANSACTION COLUMNS:
+     Positions relative to the 1303px row:
+     icon=0, name=160, method=406, date=614,
+     amount=890, status=1097. */
+  .reen-account-transaction-list {
+    margin-top: calc(39 * var(--account-unit));
+    gap: calc(24 * var(--account-unit));
+  }
+
+  .reen-account-transaction {
+    position: relative;
+    display: block;
+    height: calc(40 * var(--account-unit));
+    padding: 0;
+    border: 0;
+  }
+
+  .reen-account-transaction:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: calc(52 * var(--account-unit));
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #d9d9d9;
+  }
+
+  .reen-account-transaction-symbol {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(40 * var(--account-unit));
+    height: calc(40 * var(--account-unit));
+    font-size: calc(24 * var(--account-unit));
+  }
+
+  .reen-account-transaction-name,
+  .reen-account-transaction-method,
+  .reen-account-transaction-date {
+    position: absolute;
+    top: calc(9 * var(--account-unit));
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: calc(16 * var(--account-unit));
+    line-height: calc(21 * var(--account-unit));
+  }
+
+  .reen-account-transaction-name {
+    left: calc(160 * var(--account-unit));
+    width: calc(126 * var(--account-unit));
+  }
+
+  .reen-account-transaction-method {
+    left: calc(406 * var(--account-unit));
+    width: calc(156 * var(--account-unit));
+  }
+
+  .reen-account-transaction-date {
+    left: calc(614 * var(--account-unit));
+    width: calc(230 * var(--account-unit));
+  }
+
+  /* DATE WIDTH: Expanded beyond Figma's fixture text width to accommodate
+     real timestamps from our current date formatter. Start position is exact. */
+  .reen-account-transaction-amount {
+    position: absolute;
+    top: calc(5 * var(--account-unit));
+    left: calc(890 * var(--account-unit));
+    width: calc(87 * var(--account-unit));
+    font-size: calc(24 * var(--account-unit));
+    line-height: calc(29 * var(--account-unit));
+    white-space: nowrap;
+  }
+
+  .reen-account-transaction-status {
+    position: absolute;
+    top: 0;
+    left: calc(1097 * var(--account-unit));
+    width: calc(206 * var(--account-unit));
+    height: calc(40 * var(--account-unit));
+    min-height: 0;
+    padding: 0;
+    border-radius: calc(8 * var(--account-unit));
+    font-size: calc(16 * var(--account-unit));
+    line-height: calc(21 * var(--account-unit));
+  }
+}
