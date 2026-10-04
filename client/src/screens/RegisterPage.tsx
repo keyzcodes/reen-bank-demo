@@ -1,18 +1,69 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { supabase } from "../lib/supabase";
 const assets = "/assets";
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
-  function handleRegister(event: FormEvent<HTMLFormElement>) {
+  // REGISTRATION FEEDBACK:
+  // Show progress, errors and email-confirmation instructions.
+  const [registering, setRegistering] = useState(false);
+  const [registerError, setRegisterError] = useState("");
+  const [registerMessage, setRegisterMessage] = useState("");
+
+  async function handleRegister(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (registering) return;
 
-    const formData = new FormData(event.currentTarget);
-    const email = String(formData.get("email") ?? "").trim();
+    const fields = new FormData(event.currentTarget);
+    const name = String(fields.get("name") ?? "").trim();
+    const email = String(fields.get("email") ?? "").trim();
+    const password = String(fields.get("password") ?? "");
 
-    sessionStorage.setItem("reen-registration-email", email);
+    setRegisterError("");
+    setRegisterMessage("");
 
-    window.location.assign("/verify-email");
+    if (!name) {
+      setRegisterError("Enter your name.");
+      return;
+    }
+
+    setRegistering(true);
+
+    try {
+      // CLOUD REGISTRATION:
+      // Supabase stores the credentials; name is saved as user metadata.
+      // Separate profile and bank-account records will be connected next.
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { name },
+          emailRedirectTo: `${window.location.origin}/login`,
+        },
+      });
+
+      if (error) {
+        setRegisterError(error.message);
+        return;
+      }
+
+      if (data.session) {
+        // Email confirmation is disabled: signup also creates a session.
+        window.location.replace("/dashboard");
+        return;
+      }
+
+      // Email confirmation is enabled: require the actual email link.
+      // Do not send the user through the old simulated verification page.
+      setRegisterMessage(
+        "Check your email for a confirmation link, then return to Login. If you already have an account, log in instead.",
+      );
+    } catch {
+      setRegisterError("Unable to connect. Check your internet and try again.");
+    } finally {
+      setRegistering(false);
+    }
   }
 
   return (
@@ -213,11 +264,26 @@ export default function RegisterPage() {
               </span>
             </label>
 
+            {/* REGISTRATION FEEDBACK: Keep messages inside the existing form. */}
+            {registerError && (
+              <p role="alert" className="mt-4 text-sm text-[#b42318]">
+                {registerError}
+              </p>
+            )}
+
+            {registerMessage && (
+              <p role="status" className="mt-4 text-sm text-[#269e73]">
+                {registerMessage}
+              </p>
+            )}
+
             <button
               type="submit"
-              className="reen-auth-submit mt-10 h-[65px] w-full rounded-[10px] bg-[#33b786] font-semibold text-white"
+              disabled={registering}
+              aria-busy={registering}
+              className="reen-auth-submit mt-10 h-[65px] w-full rounded-[10px] bg-[#33b786] font-semibold text-white disabled:cursor-wait disabled:opacity-60"
             >
-              Register
+              {registering ? "Creating account..." : "Register"}
             </button>
           </form>
 

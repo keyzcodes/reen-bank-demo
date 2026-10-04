@@ -179,13 +179,18 @@
     height: calc(40 * var(--auth-unit));
   }
 
-  .reen-auth-card {
-    width: calc(787 * var(--auth-unit));
-    height: calc(var(--auth-card-height) * var(--auth-unit));
-    padding: calc(72 * var(--auth-unit))
-      calc(73.5 * var(--auth-unit));
-    border-radius: calc(32 * var(--auth-unit));
-  }
+.reen-auth-card {
+  width: calc(787 * var(--auth-unit));
+
+  /* Preserve the Figma minimum height.
+     Grow when validation or confirmation messages need extra space. */
+  min-height: calc(var(--auth-card-height) * var(--auth-unit));
+  height: auto;
+
+  padding: calc(72 * var(--auth-unit))
+    calc(73.5 * var(--auth-unit));
+  border-radius: calc(32 * var(--auth-unit));
+}
 
  .reen-register-page .reen-auth-card {
   padding-inline: calc(73.5 * var(--auth-unit));

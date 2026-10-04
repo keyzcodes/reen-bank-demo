@@ -7,8 +7,10 @@ import LoginPage from "./screens/LoginPage";
 import EmailVerificationPage from "./screens/EmailVerificationPage";
 import "./index.css";
 
+// ROUTES: Public entry pages and the login-protected dashboard.
 function renderPage() {
   switch (window.location.pathname) {
+    case "/":
     case "/landing":
       return <LandingPage />;
 
@@ -21,8 +23,11 @@ function renderPage() {
     case "/verify-email":
       return <EmailVerificationPage />;
 
-    default:
+    case "/dashboard":
       return <App />;
+
+    default:
+      return <LandingPage />;
   }
 }
 

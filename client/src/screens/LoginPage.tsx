@@ -1,10 +1,50 @@
 import { useState } from "react";
+import type { FormEvent } from "react";
+import { supabase } from "../lib/supabase";
 import PasswordResetOverlay from "../components/PasswordResetOverlay";
 const assets = "/assets";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordResetOpen, setPasswordResetOpen] = useState(false);
+  // LOGIN FEEDBACK:
+// Prevent duplicate submissions and display unsuccessful login messages.
+const [signingIn, setSigningIn] = useState(false);
+const [loginError, setLoginError] = useState("");
+
+async function handleLogin(event: FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+  if (signingIn) return;
+
+  const fields = new FormData(event.currentTarget);
+  const email = String(fields.get("email") ?? "").trim();
+  const password = String(fields.get("password") ?? "");
+
+  setSigningIn(true);
+  setLoginError("");
+
+  try {
+    // AUTHENTICATION:
+    // Supabase checks credentials and saves the resulting login session.
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setLoginError(error.message);
+      return;
+    }
+
+    // DASHBOARD ROUTE:
+    // Confirm this path against main.tsx before testing navigation.
+    window.location.replace("/dashboard");
+  } catch {
+    setLoginError("Unable to connect. Check your internet and try again.");
+  } finally {
+    setSigningIn(false);
+  }
+}
 
   return (
     <main
@@ -69,7 +109,7 @@ export default function LoginPage() {
             Login
           </h2>
 
-          <form className="mt-8" onSubmit={(event) => event.preventDefault()}>
+          <form className="mt-8" onSubmit={handleLogin}>
             <div>
               <label
                 htmlFor="login-email"
@@ -156,12 +196,21 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <button
-              type="submit"
-              className="reen-auth-submit mt-10 h-[65px] w-full rounded-[10px] bg-[#33b786] font-semibold text-white"
-            >
-              Login
-            </button>
+            {/* LOGIN ERROR: Announce failures without leaving the form. */}
+{loginError && (
+  <p role="alert" className="mt-4 text-sm text-[#b42318]">
+    {loginError}
+  </p>
+)}
+
+<button
+  type="submit"
+  disabled={signingIn}
+  aria-busy={signingIn}
+  className="reen-auth-submit mt-10 h-[65px] w-full rounded-[10px] bg-[#33b786] font-semibold text-white disabled:cursor-wait disabled:opacity-60"
+>
+  {signingIn ? "Logging in..." : "Login"}
+</button>
           </form>
 
           <p className="mt-6 text-center text-sm text-[#999]">

@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "./lib/supabase";
+import {
+  loadDashboard,
+  recordTransaction,
+  saveAccount,
+  saveProfile as saveCloudProfile,
+} from "./api/bankApi";
 
 import DashboardLayout from "./components/DashboardLayout";
 import type { NavItem } from "./components/DashboardSidebar";
 
 import type { Account, AccountId } from "./data";
-import { accounts as initialAccounts } from "./data";
 
 import AddAccountOverlay from "./components/AddAccountOverlay";
 import type { NewAccountDetails } from "./components/AddAccountOverlay";
@@ -42,23 +48,49 @@ export default function App() {
 
   // NAVIGATION:
   // Keep the selected account when moving between dashboard pages.
-  const [activeNav, setActiveNav] = useState<NavItem>("Overview");
+  // URL NAVIGATION:
+  // Keep the current page after refresh and support browser Back/Forward.
+  const [activeNav, setActiveNav] = useState<NavItem>(() => {
+    const pages: NavItem[] = [
+      "Overview",
+      "Accounts",
+      "Transactions",
+      "Profile",
+    ];
+
+    return (
+      pages.find(
+        (page) => page.toLowerCase() === window.location.hash.slice(1),
+      ) ?? "Overview"
+    );
+  });
+
+  useEffect(() => {
+    function syncPageFromUrl() {
+      const pages: NavItem[] = [
+        "Overview",
+        "Accounts",
+        "Transactions",
+        "Profile",
+      ];
+
+      setActiveNav(
+        pages.find(
+          (page) => page.toLowerCase() === window.location.hash.slice(1),
+        ) ?? "Overview",
+      );
+    }
+
+    window.addEventListener("hashchange", syncPageFromUrl);
+    return () => window.removeEventListener("hashchange", syncPageFromUrl);
+  }, []);
   const [selectedAccount, setSelectedAccount] = useState<AccountId>("main");
   // SHARED ACCOUNTS:
   // Keep the existing account names, but remove their sample money.
   // Balances and statistics displayed by rebuilt screens come from transactions.
   // This state is temporary and resets when the browser reloads.
-  const [accounts, setAccounts] = useState<Account[]>(() =>
-    initialAccounts.map((account) => ({
-      ...account,
-      balance: "\u20A6 0.00",
-      balanceRaw: 0,
-      income: "\u20A6 0.00",
-      expense: "\u20A6 0.00",
-      incomePct: 0,
-      expensePct: 0,
-    })),
-  );
+  // CLOUD ACCOUNTS: Loaded after authentication; no fixture balances.
+  const [accounts, setAccounts] = useState<Account[]>([]);
 
   // BALANCE PRIVACY:
   // Overview and Profile share this visibility setting.
@@ -72,6 +104,58 @@ export default function App() {
   // Funding and withdrawals update this list.
   // Balances and reporting totals are calculated from these records.
   const [transactions, setTransactions] = useState<BankTransaction[]>([]);
+  // CLOUD STARTUP:
+  // Keep the dashboard hidden until the user's own records are loaded.
+  const [loading, setLoading] = useState(true);
+  const [cloudError, setCloudError] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function startDashboard() {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+        if (error) throw error;
+
+        if (!data.session) {
+          window.location.replace("/login");
+          return;
+        }
+
+        const saved = await loadDashboard();
+        if (cancelled) return;
+
+        setProfile(saved.profile);
+        setAccounts(saved.accounts);
+        setTransactions(saved.transactions);
+      } catch (error) {
+        if (!cancelled) {
+          setCloudError(
+            error instanceof Error
+              ? error.message
+              : "Unable to load your account.",
+          );
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    void startDashboard();
+
+    // SESSION END:
+    // Logout in another tab also closes this dashboard.
+    const { data: subscription } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_OUT") {
+        window.location.replace("/login");
+      }
+    });
+
+    return () => {
+      cancelled = true;
+      subscription.subscription.unsubscribe();
+    };
+  }, []);
 
   // OVERVIEW ACCOUNTS:
   // Reuse the existing account IDs and names.
@@ -98,6 +182,7 @@ export default function App() {
 
   function navigate(page: NavItem) {
     setActiveNav(page);
+    window.location.hash = page.toLowerCase();
   }
 
   function toggleBalance() {
@@ -128,7 +213,7 @@ export default function App() {
   // Validate again at the transaction boundary.
   // Completed withdrawals automatically reduce calculated balances
   // and contribute to the existing expense statistics.
-  function withdrawAccount(details: WithdrawalDetails) {
+  async function withdrawAccount(details: WithdrawalDetails) {
     const accountId = withdrawAccountId;
 
     if (
@@ -165,7 +250,12 @@ export default function App() {
       recipientBank: details.bank,
     };
 
-    setTransactions((current) => [transaction, ...current]);
+    // Save first; show success only after the database accepts the withdrawal.
+    const saved = await recordTransaction(transaction);
+    setTransactions((current) => [
+      saved,
+      ...current.filter((item) => item.id !== saved.id),
+    ]);
   }
 
   // OPEN FUNDING:
@@ -179,8 +269,7 @@ export default function App() {
 
   // DEMO DEPOSIT:
   // Record an accepted Direct Pay funding action with its actual timestamp.
-  // This simulates a deposit; no external payment is processed.
-  function fundAccount(
+  async function fundAccount(
     amountKobo: number,
     paymentMethod: "Direct Pay" | "Credit Card",
   ) {
@@ -213,7 +302,12 @@ export default function App() {
       paymentMethod,
     };
 
-    setTransactions((current) => [transaction, ...current]);
+    // Save first; never persist card number, expiry or CVC.
+    const saved = await recordTransaction(transaction);
+    setTransactions((current) => [
+      saved,
+      ...current.filter((item) => item.id !== saved.id),
+    ]);
   }
   // ADD ACCOUNT:
   // Open the Accounts screen for now.
@@ -228,7 +322,7 @@ export default function App() {
   // Save the submitted details in shared frontend state.
   // A new account has no deposits, withdrawals or opening balance.
   // The overlay handles its closing animation after this function succeeds.
-  function createAccount(details: NewAccountDetails) {
+  async function createAccount(details: NewAccountDetails) {
     const name = details.name.trim();
     const description = details.description.trim();
 
@@ -254,20 +348,76 @@ export default function App() {
       expensePct: 0,
     };
 
-    setAccounts((current) => [...current, account]);
-    setSelectedAccount(account.id);
+    const saved = await saveAccount(account);
+    setAccounts((current) => [...current, saved]);
+    setSelectedAccount(saved.id);
   }
 
-  // DEMO LOGOUT:
-  // Clears the registration-flow email and returns to Landing.
-  // Backend session invalidation is not implemented yet.
-  function confirmLogout() {
+  // REAL LOGOUT:
+  // Clear the Supabase session before leaving the dashboard.
+  async function confirmLogout() {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      setCloudError(error.message);
+      setLogoutOpen(false);
+      return;
+    }
+
     sessionStorage.removeItem("reen-registration-email");
     window.location.replace("/landing");
   }
 
+  // PROFILE PERSISTENCE:
+  // Update the displayed profile only after the cloud save succeeds.
+  // The existing editor closes immediately; saving feedback appears below.
+  async function updateProfile(nextProfile: CustomerProfile) {
+    setCloudError("");
+
+    try {
+      const saved = await saveCloudProfile(nextProfile);
+      setProfile(saved);
+    } catch (error) {
+      setCloudError(
+        error instanceof Error ? error.message : "Unable to save your profile.",
+      );
+    }
+  }
+
+  // STARTUP FEEDBACK:
+  // Do not display the old default profile while cloud data is loading.
+  if (loading || (cloudError && accounts.length === 0)) {
+    return (
+      <main className="grid min-h-screen place-items-center bg-[#d4f3e7] px-6">
+        <div className="max-w-md text-center">
+          <p role={cloudError ? "alert" : "status"}>
+            {cloudError || "Loading your account..."}
+          </p>
+          {cloudError && (
+            <button
+              type="button"
+              onClick={() => window.location.reload()}
+              className="mt-4 rounded-lg bg-[#33b786] px-5 py-3 text-white"
+            >
+              Try again
+            </button>
+          )}
+        </div>
+      </main>
+    );
+  }
+
   return (
     <>
+      {/* CLOUD ERROR: Show failed saves without claiming success. */}
+      {cloudError && (
+        <div
+          role="alert"
+          className="relative z-50 bg-white px-4 py-3 text-sm text-[#b42318]"
+        >
+          {cloudError}
+        </div>
+      )}
       {/* SHARED FRAME: Header, sidebar and mobile navigation. */}
       <DashboardLayout
         activeNav={activeNav}
@@ -327,7 +477,7 @@ export default function App() {
         {activeNav === "Profile" && (
           <ProfilePage
             profile={profile}
-            onProfileChange={setProfile}
+            onProfileChange={updateProfile}
             transactions={transactions}
             balanceHidden={balanceHidden}
             onToggleBalance={toggleBalance}
