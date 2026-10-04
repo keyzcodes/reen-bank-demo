@@ -349,3 +349,221 @@
     transition: none;
   }
 }
+
+
+/* FUND WALLET: Compact phone presentation.
+   Reduce typography and spacing together.
+   Long forms scroll inside the dialog on short screens. */
+@media (max-width: 639px) {
+  .reen-fund-dialog,
+  .reen-fund-dialog.is-confirmed {
+    width: calc(100% - 32px);
+    max-height: calc(100dvh - 32px);
+    padding: 20px 16px;
+    border-radius: 20px;
+    overflow-y: auto;
+  }
+
+  .reen-fund-title {
+    margin-bottom: 16px;
+    font-size: 22px;
+    line-height: 28px;
+  }
+
+  /* LABELS: Compact, bold and consistent across payment methods. */
+  .reen-fund-methods legend,
+  .reen-fund-amount > label,
+  .reen-fund-dialog .reen-fund-card-field > label {
+    margin-bottom: 6px;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .reen-fund-method-options,
+  .reen-fund-actions,
+  .reen-fund-dialog .reen-fund-card-pair {
+    gap: 8px;
+  }
+
+  .reen-fund-method {
+    box-sizing: border-box;
+    height: 44px;
+    gap: 6px;
+    border-radius: 8px;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .reen-fund-amount {
+    margin-top: 16px;
+  }
+
+  /* INPUTS: Smaller boxes with readable typing text. */
+  .reen-fund-amount > input,
+  .reen-fund-dialog .reen-fund-card-field > input {
+    height: 44px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .reen-fund-dialog .reen-fund-card-fields {
+    margin-top: 16px;
+    gap: 12px;
+  }
+
+  .reen-fund-actions {
+    margin-top: 16px;
+  }
+
+  /* ACTIONS: 32px visible surfaces inside 44px touch targets. */
+  .reen-fund-actions button,
+  .reen-fund-back {
+    position: relative;
+    isolation: isolate;
+    min-width: 0;
+    height: 44px;
+    padding: 0 8px;
+    border-radius: 8px;
+    background: transparent;
+    font-size: 13px;
+    line-height: 18px;
+    white-space: nowrap;
+  }
+
+  .reen-fund-actions button::before,
+  .reen-fund-back::before {
+    content: "";
+    position: absolute;
+    inset: 6px 0;
+    z-index: -1;
+    border-radius: 8px;
+    background: #33b786;
+    pointer-events: none;
+  }
+
+  .reen-fund-cancel::before {
+    background: #d4d4d4;
+  }
+
+  .reen-fund-error {
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  /* CONFIRMATION: Smaller GIF, message and action spacing. */
+  .reen-fund-success-image {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 12px;
+  }
+
+  .reen-fund-success h2 {
+    font-size: 14px;
+    line-height: 20px;
+    overflow-wrap: anywhere;
+  }
+
+  .reen-fund-back {
+    margin-top: 16px;
+  }
+}
+/* CREDIT CARD: Mobile adaptation.
+   Field widths shrink with the popup; expiry and CVC stay side by side. */
+.reen-fund-card-fields {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+  margin-top: 40px;
+}
+
+.reen-fund-card-field {
+  min-width: 0;
+}
+
+.reen-fund-card-field > label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 21px;
+}
+
+.reen-fund-card-field > input {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 52px;
+  padding: 12px;
+  border: 1px solid #8a8a8a;
+  border-radius: 12px;
+  background: #fff;
+  color: #252525;
+  font: 700 16px / 21px "DM Sans", sans-serif;
+  box-shadow: 0 0 50px 0.5px rgb(0 0 0 / 5%);
+}
+
+.reen-fund-card-field > input::placeholder {
+  color: #b8b8b8;
+  opacity: 1;
+}
+
+.reen-fund-card-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.reen-fund-method {
+  cursor: pointer;
+}
+
+/* CREDIT CARD: Desktop geometry.
+   Verified card: 560 x 907.
+   Full fields: 400 x 64; paired fields: 180 x 64, separated by 40.
+   Field labels are 116 Figma pixels apart vertically.
+   The first field offset and button placement are derived from the
+   supplied screenshot arrangement, rather than a measured card origin. */
+@media (min-width: 1024px) {
+  .reen-fund-dialog.is-credit-card {
+    height: calc(907 * var(--fund-unit));
+  }
+
+  .reen-fund-card-fields {
+    position: absolute;
+    top: calc(400 * var(--fund-unit));
+    left: calc(60 * var(--fund-unit));
+    width: calc(400 * var(--fund-unit));
+    gap: calc(24 * var(--fund-unit));
+    margin: 0;
+  }
+
+  .reen-fund-card-field > label {
+    margin-bottom: calc(7 * var(--fund-unit));
+    font-size: calc(16 * var(--fund-unit));
+    line-height: calc(21 * var(--fund-unit));
+  }
+
+  .reen-fund-card-field > input {
+    height: calc(64 * var(--fund-unit));
+    padding: calc(12 * var(--fund-unit)) calc(24 * var(--fund-unit));
+    border-radius: calc(12 * var(--fund-unit));
+    font-size: calc(16 * var(--fund-unit));
+    line-height: calc(21 * var(--fund-unit));
+  }
+
+  .reen-fund-card-pair {
+    gap: calc(40 * var(--fund-unit));
+  }
+
+  .reen-fund-dialog.is-credit-card .reen-fund-error {
+    top: calc(706 * var(--fund-unit));
+  }
+
+  .reen-fund-dialog.is-credit-card .reen-fund-actions {
+    top: calc(744 * var(--fund-unit));
+  }
+}

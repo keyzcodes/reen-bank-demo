@@ -1,10 +1,6 @@
 // DASHBOARD NAVIGATION:
 // These page names are shared by App, the sidebar and the mobile menu.
-export type NavItem =
-  | "Overview"
-  | "Accounts"
-  | "Transactions"
-  | "Profile";
+export type NavItem = "Overview" | "Accounts" | "Transactions" | "Profile";
 
 export const navItems: { id: NavItem; label: string }[] = [
   { id: "Overview", label: "Overview" },
@@ -81,7 +77,9 @@ export function NavButton({
       type="button"
       onClick={onClick}
       className={`flex items-center cursor-pointer transition-colors ${
-        compact ? "gap-3 px-3 py-2 rounded-lg" : "gap-10"
+        compact
+          ? "reen-mobile-nav-button min-h-12 gap-3 rounded-lg px-3 py-2"
+          : "gap-10"
       } ${compact && active ? "bg-[#33b786]/10" : ""}`}
     >
       {navIcon(item.id, active)}
@@ -112,7 +110,7 @@ export default function DashboardSidebar({
   onLogout: () => void;
 }) {
   return (
-    <aside className="reen-dashboard-sidebar hidden md:flex flex-col w-[220px] xl:w-[240px] shrink-0 px-6 xl:px-[30px] pt-10 xl:pt-[64px] pb-10 min-h-screen">
+    <aside className="reen-dashboard-sidebar hidden lg:flex flex-col w-[220px] xl:w-[240px] shrink-0 px-6 xl:px-[30px] pt-10 xl:pt-[64px] pb-10 min-h-screen">
       <div className="mb-10 xl:mb-[60px]">
         <img
           src="/assets/17ec0.png"
@@ -137,11 +135,7 @@ export default function DashboardSidebar({
         onClick={onLogout}
         className="reen-dashboard-logout flex items-center gap-10 cursor-pointer mt-auto"
       >
-        <img
-          src="/assets/01571.svg"
-          alt=""
-          className="w-8 h-8 shrink-0"
-        />
+        <img src="/assets/01571.svg" alt="" className="w-8 h-8 shrink-0" />
         <span
           className="text-[20px] leading-normal text-[#555]"
           style={{ ...navigationFont, fontWeight: 500 }}

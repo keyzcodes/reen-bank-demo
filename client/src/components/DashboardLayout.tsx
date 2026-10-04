@@ -1,13 +1,14 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
 import type { CustomerProfile } from "../screens/ProfilePage";
-import DashboardSidebar, {
-  NavButton,
-  navItems,
-} from "./DashboardSidebar";
+import DashboardSidebar, { NavButton, navItems } from "./DashboardSidebar";
 import type { NavItem } from "./DashboardSidebar";
 import DashboardHeader from "./DashboardHeader";
+// DASHBOARD STYLES:
+// Load the shared frame first, then Overview's page-specific overrides.
+// Overview selectors apply only when the shell has reen-overview-shell.
 import "../styles/dashboard.css";
+import "../styles/overview.css";
 
 type DashboardLayoutProps = {
   activeNav: NavItem;
@@ -46,10 +47,10 @@ export default function DashboardLayout({
     <div
       className={`reen-dashboard-shell relative min-h-screen w-full overflow-x-hidden ${
         activeNav === "Profile"
-  ? "reen-profile-shell"
-  : activeNav === "Overview"
-    ? "reen-overview-shell"
-    : ""
+          ? "reen-profile-shell"
+          : activeNav === "Overview"
+            ? "reen-overview-shell"
+            : ""
       }`}
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
@@ -72,10 +73,12 @@ export default function DashboardLayout({
         <img
           src="/assets/17ec0.png"
           alt="Reen Bank"
-          className="h-10 w-auto object-contain"
+          className="h-auto w-[130px] min-w-0 object-contain sm:w-[170px]"
         />
 
-        <div className="flex items-center gap-3">
+        {/* HEADER CONTROLS:
+    Prevent the buttons and avatar from shrinking beside the logo. */}
+        <div className="flex shrink-0 items-center gap-1 sm:gap-3">
           <button
             type="button"
             aria-label="Notifications"
@@ -87,13 +90,13 @@ export default function DashboardLayout({
           <button
             type="button"
             aria-label="Profile"
-            className="cursor-pointer"
+            className="flex h-11 w-11 shrink-0 items-center justify-center cursor-pointer"
             onClick={() => navigate("Profile")}
           >
             <img
               src={profile.avatar}
               alt=""
-              className="w-10 h-10 rounded-full object-cover"
+              className="h-9 w-9 shrink-0 rounded-full object-cover sm:h-10 sm:w-10"
             />
           </button>
 
@@ -169,7 +172,7 @@ export default function DashboardLayout({
 
         <main className="reen-dashboard-main flex-1 min-w-0 px-4 md:px-5 xl:px-5 pt-5 md:pt-10 xl:pt-[64px] pb-10">
           <h1
-            className="md:hidden text-[28px] font-bold text-[#252525] mb-5"
+            className="lg:hidden mb-5 text-[26px] font-bold text-[#252525] sm:text-[28px]"
             style={{ fontVariationSettings: '"opsz" 14' }}
           >
             {activeNav}

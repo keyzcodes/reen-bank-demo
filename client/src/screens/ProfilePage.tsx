@@ -1,5 +1,11 @@
 import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
+import {
+  calculateBalance,
+  formatNaira,
+  formatTransactionDate,
+} from "../utils/banking";
+import type { BankTransaction } from "../utils/banking";
 import "../styles/profile.css";
 
 // PROFILE: Shared customer details.
@@ -23,7 +29,8 @@ type ProfileTransaction = {
 type ProfilePageProps = {
   profile: CustomerProfile;
   onProfileChange: (profile: CustomerProfile) => void;
-  transactions: ProfileTransaction[];
+  // SHARED HISTORY: Same transaction records used by the other screens.
+  transactions: readonly BankTransaction[];
   balanceHidden: boolean;
   onToggleBalance: () => void;
   onResetPassword: () => void;
@@ -44,6 +51,20 @@ export default function ProfilePage({
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState<CustomerProfile>(profile);
   const [photoError, setPhotoError] = useState("");
+  // MAIN ACCOUNT:
+  // Calculate its balance from completed deposits and withdrawals.
+  // "main" is the existing Main Account ID in our demo data.
+  const mainBalanceKobo = calculateBalance(transactions, "main");
+
+  // RECENT HISTORY:
+  // Show the newest eight transactions across all accounts.
+  // Copy before sorting so App's shared array is not changed.
+  const recentTransactions = [...transactions]
+    .sort(
+      (first, second) =>
+        Date.parse(second.createdAt) - Date.parse(first.createdAt),
+    )
+    .slice(0, 8);
 
   // PROFILE: Start editing a fresh copy of the saved details.
   function beginEditing() {
@@ -236,7 +257,9 @@ export default function ProfilePage({
       <aside className="reen-profile-right" aria-label="Account summary">
         <section className="reen-profile-balance" aria-label="Main account">
           <p>Main Account</p>
-          <strong>{balanceHidden ? "XXXXXXXX" : "₦ 0.00"}</strong>
+          <strong>
+            {balanceHidden ? "XXXXXXXX" : formatNaira(mainBalanceKobo)}
+          </strong>
           <button
             type="button"
             onClick={onToggleBalance}
@@ -279,22 +302,35 @@ export default function ProfilePage({
           {/* TRANSACTION LIST:
       A separate wrapper controls spacing between rows.
       These are fixture transactions; backend integration comes later. */}
+          {/* PROFILE HISTORY:
+    Actual shared demo transactions, with their recorded dates and amounts.
+    Backend persistence will be added later. */}
           <div className="reen-profile-transaction-list">
-            {transactions.slice(0, 8).map((transaction) => (
-              <div className="reen-profile-transaction" key={transaction.id}>
-                <span>{transaction.name}</span>
+            {recentTransactions.length === 0 ? (
+              <p role="status">No transactions yet.</p>
+            ) : (
+              recentTransactions.map((transaction) => (
+                <div className="reen-profile-transaction" key={transaction.id}>
+                  <span>{transaction.counterparty}</span>
 
-                <time>{transaction.date}</time>
+                  <time dateTime={transaction.createdAt}>
+                    {formatTransactionDate(transaction.createdAt)}
+                  </time>
 
-                <strong
-                  className={
-                    transaction.type === "credit" ? "is-credit" : "is-debit"
-                  }
-                >
-                  {transaction.amount}
-                </strong>
-              </div>
-            ))}
+                  <strong
+                    className={
+                      transaction.kind === "deposit" ? "is-credit" : "is-debit"
+                    }
+                  >
+                    {balanceHidden
+                      ? "XXXXXXXX"
+                      : `${transaction.kind === "deposit" ? "+" : "\u2212"}${formatNaira(
+                          transaction.amountKobo,
+                        )}`}
+                  </strong>
+                </div>
+              ))
+            )}
           </div>
         </section>
       </aside>

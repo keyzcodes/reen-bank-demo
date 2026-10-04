@@ -1,0 +1,435 @@
+/* WITHDRAW: Mobile-first presentation.
+   Compact spacing and 48px controls.
+   Short screens scroll inside the popup without horizontal overflow. */
+.reen-withdraw-dialog {
+  box-sizing: border-box;
+  width: min(560px, calc(100% - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 24px 20px;
+  overflow-y: auto;
+  border: 0;
+  border-radius: 24px;
+  background: #fff;
+  color: #252525;
+  font-family: "DM Sans", sans-serif;
+  box-shadow: 0 0 200px 25px rgb(51 183 134 / 25%);
+  animation: reen-withdraw-dissolve 300ms ease-out;
+  transition: opacity 300ms ease-out;
+}
+
+/* BACKDROP: Adaptation; its opacity was not supplied in Figma. */
+.reen-withdraw-dialog::backdrop {
+  background: rgb(0 0 0 / 20%);
+  animation: reen-withdraw-dissolve 300ms ease-out;
+  transition: opacity 300ms ease-out;
+}
+
+.reen-withdraw-dialog.is-closing,
+.reen-withdraw-dialog.is-closing::backdrop {
+  opacity: 0;
+}
+
+.reen-withdraw-title {
+  margin: 0 0 24px;
+  color: #33b786;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.reen-withdraw-fields {
+  display: grid;
+  gap: 18px;
+}
+
+.reen-withdraw-field {
+  min-width: 0;
+}
+
+.reen-withdraw-field > label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+}
+
+/* INPUTS:
+   Keep typing text at 16px; reduce padding and spacing for phones. */
+.reen-withdraw-field input,
+.reen-withdraw-field select {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 48px;
+  padding: 10px 12px;
+  border: 1px solid #8a8a8a;
+  border-radius: 12px;
+  background: #fff;
+  color: #252525;
+  font: 700 16px / 21px "DM Sans", sans-serif;
+  box-shadow: 0 0 50px 0.5px rgb(0 0 0 / 5%);
+}
+
+.reen-withdraw-field input::placeholder,
+.reen-withdraw-field select.is-placeholder {
+  color: #b8b8b8;
+  opacity: 1;
+}
+
+.reen-withdraw-field select option {
+  color: #252525;
+}
+
+/* BANK CARET:
+   Recreate the measured 13.17 x 7.59 grey triangle.
+   The native select still handles the actual dropdown interaction. */
+.reen-withdraw-select-wrap {
+  position: relative;
+}
+
+.reen-withdraw-select-wrap select {
+  appearance: none;
+  padding-right: 40px;
+}
+
+.reen-withdraw-select-wrap::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  width: 13.17px;
+  height: 7.59px;
+  background: #b8b8b8;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.reen-withdraw-error {
+  margin: 12px 0 0;
+  color: #b42318;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.reen-withdraw-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.reen-withdraw-actions button,
+.reen-withdraw-back {
+  min-width: 0;
+  height: 48px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 12px;
+  font: 700 16px / 22px "DM Sans", sans-serif;
+  cursor: pointer;
+}
+
+.reen-withdraw-cancel {
+  background: #d4d4d4;
+  color: #252525;
+}
+
+.reen-withdraw-submit,
+.reen-withdraw-back {
+  background: #33b786;
+  color: #fff;
+}
+
+.reen-withdraw-dialog button:disabled {
+  cursor: default;
+}
+
+.reen-withdraw-dialog :is(button, input, select):focus-visible {
+  outline: 2px solid #269e73;
+  outline-offset: 3px;
+}
+
+/* CONFIRMATION:
+   Reuse the previous confirmation geometry.
+   GIF placement follows our existing overlay adaptation.
+   Withdrawal wording is functional copy, not newly verified Figma text. */
+.reen-withdraw-dialog.is-confirmed {
+  width: min(697px, calc(100% - 32px));
+  box-shadow: 0 0 150px 25px rgb(51 183 134 / 25%);
+}
+
+.reen-withdraw-success {
+  text-align: center;
+}
+
+.reen-withdraw-success-image {
+  display: block;
+  width: 112px;
+  height: 112px;
+  margin: 0 auto 16px;
+  object-fit: contain;
+}
+
+.reen-withdraw-success h2 {
+  margin: 0;
+  color: #6c6c6c;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.reen-withdraw-success h2 span {
+  color: #33b786;
+}
+
+.reen-withdraw-back {
+  display: block;
+  width: 100%;
+  margin-top: 24px;
+}
+
+/* TABLET: Add breathing room without applying desktop positioning. */
+@media (min-width: 640px) {
+  .reen-withdraw-dialog {
+    padding: 32px 40px;
+    border-radius: 32px;
+  }
+
+  .reen-withdraw-title {
+    font-size: 36px;
+  }
+
+  .reen-withdraw-fields {
+    gap: 24px;
+  }
+
+  .reen-withdraw-field > label {
+    font-size: 16px;
+    line-height: 21px;
+  }
+
+  .reen-withdraw-field input,
+  .reen-withdraw-field select,
+  .reen-withdraw-actions button,
+  .reen-withdraw-back {
+    height: 56px;
+  }
+}
+
+/* DESKTOP FIGMA:
+   At 1920px, one unit equals one Figma pixel.
+   Card: 560 x 791. Content inset: 80px.
+   Heading starts at y=72; first input at y=195.
+   Later field spacing follows the screenshot arrangement.
+   Errors may increase the height so text never overlaps the buttons. */
+@media (min-width: 1024px) {
+  .reen-withdraw-dialog {
+    --withdraw-unit: min(0.0520833333vw, 1px);
+    width: calc(560 * var(--withdraw-unit));
+    min-height: calc(791 * var(--withdraw-unit));
+    padding:
+      calc(72 * var(--withdraw-unit))
+      calc(80 * var(--withdraw-unit));
+    border-radius: calc(32 * var(--withdraw-unit));
+  }
+
+  .reen-withdraw-title {
+    margin-bottom: calc(40 * var(--withdraw-unit));
+    font-size: calc(48 * var(--withdraw-unit));
+    line-height: calc(55 * var(--withdraw-unit));
+  }
+
+  .reen-withdraw-fields {
+    gap: calc(24 * var(--withdraw-unit));
+  }
+
+  .reen-withdraw-field > label {
+    margin-bottom: calc(7 * var(--withdraw-unit));
+    font-size: calc(16 * var(--withdraw-unit));
+    line-height: calc(21 * var(--withdraw-unit));
+  }
+
+  .reen-withdraw-field input,
+  .reen-withdraw-field select {
+    height: calc(64 * var(--withdraw-unit));
+    padding:
+      calc(12 * var(--withdraw-unit))
+      calc(24 * var(--withdraw-unit));
+    border-radius: calc(12 * var(--withdraw-unit));
+    font-size: calc(16 * var(--withdraw-unit));
+    line-height: calc(21 * var(--withdraw-unit));
+  }
+
+  .reen-withdraw-select-wrap select {
+    padding-right: calc(56 * var(--withdraw-unit));
+  }
+
+  .reen-withdraw-select-wrap::after {
+    right: calc(28 * var(--withdraw-unit));
+    width: calc(13.17 * var(--withdraw-unit));
+    height: calc(7.59 * var(--withdraw-unit));
+  }
+
+  .reen-withdraw-actions {
+    gap: calc(40 * var(--withdraw-unit));
+    margin-top: calc(48 * var(--withdraw-unit));
+  }
+
+  .reen-withdraw-actions button,
+  .reen-withdraw-back {
+    height: calc(64 * var(--withdraw-unit));
+    border-radius: calc(12 * var(--withdraw-unit));
+    font-size: calc(24 * var(--withdraw-unit));
+    line-height: calc(31 * var(--withdraw-unit));
+  }
+
+  .reen-withdraw-dialog.is-confirmed {
+    width: calc(697 * var(--withdraw-unit));
+    min-height: calc(479 * var(--withdraw-unit));
+    padding:
+      calc(32 * var(--withdraw-unit))
+      calc(80 * var(--withdraw-unit));
+  }
+
+  .reen-withdraw-success-image {
+    width: calc(200 * var(--withdraw-unit));
+    height: calc(200 * var(--withdraw-unit));
+    margin-bottom: calc(24 * var(--withdraw-unit));
+  }
+
+  .reen-withdraw-success h2 {
+    font-size: calc(24 * var(--withdraw-unit));
+    line-height: calc(31 * var(--withdraw-unit));
+  }
+
+  .reen-withdraw-back {
+    margin-top: calc(56 * var(--withdraw-unit));
+  }
+}
+
+@keyframes reen-withdraw-dissolve {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reen-withdraw-dialog,
+  .reen-withdraw-dialog::backdrop {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* WITHDRAW: Compact phone presentation.
+   Match Fund Wallet's text, fields and action sizing.
+   Preserve internal scrolling when the available height is limited. */
+@media (max-width: 639px) {
+  .reen-withdraw-dialog,
+  .reen-withdraw-dialog.is-confirmed {
+    width: calc(100% - 32px);
+    max-height: calc(100dvh - 32px);
+    padding: 20px 16px;
+    border-radius: 20px;
+    overflow-y: auto;
+  }
+
+  .reen-withdraw-title {
+    margin-bottom: 16px;
+    font-size: 22px;
+    line-height: 28px;
+  }
+
+  .reen-withdraw-fields {
+    gap: 12px;
+  }
+
+  .reen-withdraw-field > label {
+    margin-bottom: 6px;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  /* INPUTS: Compact height with readable typing text. */
+  .reen-withdraw-field input,
+  .reen-withdraw-field select {
+    height: 44px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .reen-withdraw-select-wrap select {
+    padding-right: 32px;
+  }
+
+  .reen-withdraw-select-wrap::after {
+    right: 12px;
+    width: 10px;
+    height: 6px;
+  }
+
+  .reen-withdraw-actions {
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  /* ACTIONS: Compact colour surfaces with larger touch areas. */
+  .reen-withdraw-actions button,
+  .reen-withdraw-back {
+    position: relative;
+    isolation: isolate;
+    min-width: 0;
+    height: 44px;
+    padding: 0 8px;
+    border-radius: 8px;
+    background: transparent;
+    font-size: 13px;
+    line-height: 18px;
+    white-space: nowrap;
+  }
+
+  .reen-withdraw-actions button::before,
+  .reen-withdraw-back::before {
+    content: "";
+    position: absolute;
+    inset: 6px 0;
+    z-index: -1;
+    border-radius: 8px;
+    background: #33b786;
+    pointer-events: none;
+  }
+
+  .reen-withdraw-cancel::before {
+    background: #d4d4d4;
+  }
+
+  .reen-withdraw-error {
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  /* CONFIRMATION: Match the compact funding confirmation. */
+  .reen-withdraw-success-image {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 12px;
+  }
+
+  .reen-withdraw-success h2 {
+    font-size: 14px;
+    line-height: 20px;
+    overflow-wrap: anywhere;
+  }
+
+  .reen-withdraw-back {
+    margin-top: 16px;
+  }
+}

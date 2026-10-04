@@ -1,0 +1,390 @@
+/* TRANSACTIONS: Mobile-first.
+   Account cards stack vertically.
+   Transaction details have explicit positions instead of competing
+   for space in a single horizontal row. */
+.reen-transactions-page {
+  min-width: 0;
+  font-family: "DM Sans", sans-serif;
+  color: #252525;
+}
+
+.reen-history-account-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+.reen-history-account-card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 12px;
+  background: #d4f3e7;
+}
+
+/* SELECTION STRIP:
+   Reuse the purple selected-account appearance from Accounts. */
+.reen-history-account-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 8px;
+  background: #46237a;
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+  pointer-events: none;
+}
+
+.reen-history-account-card.is-selected::before {
+  opacity: 1;
+}
+
+/* MOBILE ACCOUNT CARDS:
+   Compact spacing and typography.
+   Desktop geometry is defined separately below. */
+.reen-history-account-select {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  min-height: 96px;
+  padding: 16px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.reen-history-account-name {
+  max-width: calc(100% - 44px);
+  color: #46237a;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+  overflow-wrap: anywhere;
+}
+
+.reen-history-account-balance {
+  display: block;
+  margin-top: 4px;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 32px;
+  white-space: nowrap;
+}
+
+/* VISIBILITY:
+   Keep the icon small and its touch target comfortable. */
+.reen-history-visibility {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.reen-history-visibility img {
+  width: 16px;
+  height: 16px;
+}
+
+/* HISTORY: Content grows with the actual transaction count. */
+.reen-history {
+  margin-top: 28px;
+  min-width: 0;
+}
+
+.reen-history-empty {
+  margin: 0;
+  padding: 24px 0;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* MOBILE HISTORY:
+   Match the compact arrangement checked on Accounts.
+   The icon sits beside both name/date lines. */
+.reen-history-list {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reen-history-row {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  grid-template-areas:
+    "symbol name amount"
+    "symbol date status";
+  column-gap: 8px;
+  row-gap: 4px;
+  align-items: center;
+  min-width: 0;
+  min-height: 52px;
+  padding: 0;
+  border: 0;
+  color: #8c8c8c;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.reen-history-symbol {
+  grid-area: symbol;
+  align-self: center;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.reen-history-symbol.is-credit {
+  background: #33b786;
+}
+
+.reen-history-symbol.is-debit {
+  background: #e74f5b;
+}
+
+/* NAME:
+   Shorten long names without hiding any amount digits. */
+.reen-history-name {
+  grid-area: name;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reen-history-date {
+  grid-area: date;
+  min-width: 0;
+  font-size: 10px;
+  line-height: 16px;
+}
+
+.reen-history-amount {
+  grid-area: amount;
+  justify-self: end;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+.reen-history-amount.is-credit {
+  color: #33b786;
+}
+
+.reen-history-amount.is-debit {
+  color: #e74f5b;
+}
+
+/* MOBILE STATUS:
+   Small text beneath the amount.
+   Desktop badges are restored in the desktop rules below. */
+.reen-history-status {
+  grid-area: status;
+  justify-self: end;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.reen-history-status.is-pending {
+  color: #555;
+}
+
+.reen-history-status.is-completed {
+  color: #33b786;
+}
+
+.reen-history-status.is-failed {
+  color: #e74f5b;
+}
+
+.reen-transactions-page button:focus-visible {
+  outline: 2px solid #269e73;
+  outline-offset: -3px;
+}
+
+/* TABLET: Two cards per row, while history keeps its readable layout. */
+@media (min-width: 640px) {
+  .reen-history-account-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+
+/* DESKTOP FRAME:
+   Shared main starts at x491/y190.
+   Transactions content starts at x497/y247.
+   Verified content width: 1303 Figma pixels. */
+@media (min-width: 1024px) {
+  .reen-transactions-page {
+    --transaction-unit: var(
+      --dashboard-unit,
+      min(0.0520833333vw, 1px)
+    );
+    width: calc(1303 * var(--transaction-unit));
+    margin-left: calc(6 * var(--transaction-unit));
+    padding-top: calc(57 * var(--transaction-unit));
+  }
+
+  /* ACCOUNT CARDS:
+     376 + 375 + 376, with two 88px gaps, equals 1303.
+     Added accounts wrap onto another row rather than being hidden. */
+  .reen-history-account-grid {
+    grid-template-columns:
+      minmax(0, 376fr)
+      minmax(0, 375fr)
+      minmax(0, 376fr);
+    column-gap: calc(88 * var(--transaction-unit));
+    row-gap: calc(24 * var(--transaction-unit));
+  }
+
+  .reen-history-account-card {
+    min-height: calc(127 * var(--transaction-unit));
+    border-radius: calc(12 * var(--transaction-unit));
+  }
+
+  .reen-history-account-card::before {
+    width: calc(8 * var(--transaction-unit));
+  }
+
+  .reen-history-account-select {
+    justify-content: flex-start;
+    min-height: calc(127 * var(--transaction-unit));
+    padding:
+      calc(32 * var(--transaction-unit))
+      calc(64 * var(--transaction-unit))
+      calc(20 * var(--transaction-unit))
+      calc(40 * var(--transaction-unit));
+  }
+
+  /* DESKTOP NAME: Remove the mobile icon-space restriction. */
+  .reen-history-account-name {
+    max-width: none;
+    font-size: calc(16 * var(--transaction-unit));
+    line-height: calc(21 * var(--transaction-unit));
+  }
+
+  .reen-history-account-balance {
+    margin-top: calc(4 * var(--transaction-unit));
+    font-size: calc(32 * var(--transaction-unit));
+    line-height: calc(38 * var(--transaction-unit));
+  }
+
+  /* ICON GEOMETRY:
+     The icon starts 32px from the top/right.
+     Its larger button target surrounds it without changing placement. */
+  .reen-history-visibility {
+    top: calc(18 * var(--transaction-unit));
+    right: calc(18 * var(--transaction-unit));
+    width: calc(44 * var(--transaction-unit));
+    height: calc(44 * var(--transaction-unit));
+  }
+
+  .reen-history-visibility img {
+    width: calc(16 * var(--transaction-unit));
+    height: calc(16 * var(--transaction-unit));
+  }
+
+/* DESKTOP HISTORY:
+   Five columns after removing payment method.
+   Column proportions are an adaptation, not verified Figma coordinates. */
+.reen-history-row {
+  grid-template-areas: none;
+  grid-template-columns:
+    calc(40 * var(--transaction-unit))
+    minmax(0, 1.5fr)
+    minmax(0, 1.2fr)
+    minmax(0, 1fr)
+    calc(204 * var(--transaction-unit));
+  align-items: center;
+  column-gap: calc(40 * var(--transaction-unit));
+  row-gap: 0;
+  min-height: calc(40 * var(--transaction-unit));
+  padding: calc(8 * var(--transaction-unit)) 0;
+  border-bottom: 1px solid #d9d9d9;
+  font-size: calc(16 * var(--transaction-unit));
+  line-height: calc(21 * var(--transaction-unit));
+}
+
+  .reen-history-row + .reen-history-row {
+    margin-top: calc(24 * var(--transaction-unit));
+  }
+
+  .reen-history-row > * {
+    grid-area: auto;
+    min-width: 0;
+  }
+
+  .reen-history-symbol {
+    width: calc(40 * var(--transaction-unit));
+    height: calc(40 * var(--transaction-unit));
+    font-size: calc(28 * var(--transaction-unit));
+  }
+
+  .reen-history-date {
+    font-size: calc(16 * var(--transaction-unit));
+  }
+
+  .reen-history-amount {
+    text-align: right;
+    font-size: calc(24 * var(--transaction-unit));
+    line-height: calc(31 * var(--transaction-unit));
+  }
+
+  /* DESKTOP STATUS:
+   Preserve the existing badge presentation. */
+.reen-history-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: stretch;
+  min-height: calc(40 * var(--transaction-unit));
+  padding: calc(4 * var(--transaction-unit));
+  border-radius: calc(6 * var(--transaction-unit));
+  font-size: calc(16 * var(--transaction-unit));
+  line-height: calc(21 * var(--transaction-unit));
+}
+
+.reen-history-status.is-pending {
+  background: #d4d4d4;
+  color: #555;
+}
+
+.reen-history-status.is-completed {
+  background: #33b786;
+  color: #fff;
+}
+
+.reen-history-status.is-failed {
+  background: #e74f5b;
+  color: #fff;
+}
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reen-history-account-card::before {
+    transition: none;
+  }
+}

@@ -20,6 +20,8 @@ import type { CustomerProfile } from "./screens/ProfilePage";
 import LogoutOverlay from "./components/LogoutOverlay";
 import PasswordResetOverlay from "./components/PasswordResetOverlay";
 import FundWalletOverlay from "./components/FundWalletOverlay";
+import WithdrawWalletOverlay from "./components/WithdrawWalletOverlay";
+import type { WithdrawalDetails } from "./components/WithdrawWalletOverlay";
 import { calculateBalance } from "./utils/banking";
 
 // APP COORDINATOR:
@@ -66,7 +68,7 @@ export default function App() {
   // No opening deposits or sample transactions.
   // Overview therefore starts with zero balances and empty activity.
   // Transaction actions will update this state in a later step.
-    // SHARED TRANSACTIONS:
+  // SHARED TRANSACTIONS:
   // Funding and withdrawals update this list.
   // Balances and reporting totals are calculated from these records.
   const [transactions, setTransactions] = useState<BankTransaction[]>([]);
@@ -84,9 +86,15 @@ export default function App() {
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [passwordResetOpen, setPasswordResetOpen] = useState(false);
   const [addAccountOpen, setAddAccountOpen] = useState(false);
-    // FUND TARGET:
+  // FUND TARGET:
   // Remember which account's Fund button opened the form.
   const [fundAccountId, setFundAccountId] = useState<AccountId | null>(null);
+  // WITHDRAW TARGET:
+  // Null means the popup is closed.
+  // Otherwise, this identifies the account being debited.
+  const [withdrawAccountId, setWithdrawAccountId] = useState<AccountId | null>(
+    null,
+  );
 
   function navigate(page: NavItem) {
     setActiveNav(page);
@@ -107,7 +115,60 @@ export default function App() {
     navigate("Accounts");
   }
 
-    // OPEN FUNDING:
+  // OPEN WITHDRAWAL:
+  // Keep the account selection and popup target consistent.
+  function beginWithdrawal(accountId: AccountId) {
+    if (!accounts.some((account) => account.id === accountId)) return;
+
+    setSelectedAccount(accountId);
+    setWithdrawAccountId(accountId);
+  }
+
+  // RECORD WITHDRAWAL:
+  // Validate again at the transaction boundary.
+  // Completed withdrawals automatically reduce calculated balances
+  // and contribute to the existing expense statistics.
+  function withdrawAccount(details: WithdrawalDetails) {
+    const accountId = withdrawAccountId;
+
+    if (
+      accountId === null ||
+      !accounts.some((account) => account.id === accountId)
+    ) {
+      throw new Error("The selected account is unavailable.");
+    }
+
+    if (!Number.isSafeInteger(details.amountKobo) || details.amountKobo <= 0) {
+      throw new Error("Enter a valid withdrawal amount.");
+    }
+
+    const balance = calculateBalance(transactions, accountId);
+
+    if (details.amountKobo > balance) {
+      throw new Error("Insufficient balance for this withdrawal.");
+    }
+
+    const transaction: BankTransaction & {
+      paymentMethod: string;
+      recipientAccountNumber: string;
+      recipientBank: string;
+    } = {
+      id: crypto.randomUUID(),
+      accountId,
+      kind: "withdrawal",
+      amountKobo: details.amountKobo,
+      counterparty: details.accountName,
+      createdAt: new Date().toISOString(),
+      status: "completed",
+      paymentMethod: "Bank Transfer",
+      recipientAccountNumber: details.accountNumber,
+      recipientBank: details.bank,
+    };
+
+    setTransactions((current) => [transaction, ...current]);
+  }
+
+  // OPEN FUNDING:
   // Only allow funding an account in the shared account list.
   function beginFunding(accountId: AccountId) {
     if (!accounts.some((account) => account.id === accountId)) return;
@@ -119,7 +180,10 @@ export default function App() {
   // DEMO DEPOSIT:
   // Record an accepted Direct Pay funding action with its actual timestamp.
   // This simulates a deposit; no external payment is processed.
-  function fundAccount(amountKobo: number) {
+  function fundAccount(
+    amountKobo: number,
+    paymentMethod: "Direct Pay" | "Credit Card",
+  ) {
     if (
       !fundAccountId ||
       !accounts.some((account) => account.id === fundAccountId)
@@ -145,7 +209,8 @@ export default function App() {
       counterparty: "Wallet funding",
       createdAt: new Date().toISOString(),
       status: "completed",
-      paymentMethod: "Direct Pay",
+      // Store the chosen method, without storing card details.
+      paymentMethod,
     };
 
     setTransactions((current) => [transaction, ...current]);
@@ -227,7 +292,7 @@ export default function App() {
             Existing screen retained until its rebuild.
             Its old data is not connected to transactions above yet. */}
         {activeNav === "Accounts" && (
-                   <AccountsScreen
+          <AccountsScreen
             accounts={accounts}
             selectedAccountId={selectedAccount}
             onSelectAccount={setSelectedAccount}
@@ -237,6 +302,7 @@ export default function App() {
             onViewTransactions={() => navigate("Transactions")}
             onAddAccount={beginAccountCreation}
             onFundAccount={beginFunding}
+            onWithdrawAccount={beginWithdrawal}
           />
         )}
 
@@ -245,8 +311,12 @@ export default function App() {
             It still uses its own fixture data. */}
         {activeNav === "Transactions" && (
           <TransactionsScreen
+            accounts={accounts}
+            transactions={transactions}
             selectedAccountId={selectedAccount}
             onSelectAccount={setSelectedAccount}
+            balanceHidden={balanceHidden}
+            onToggleBalance={() => setBalanceHidden((hidden) => !hidden)}
           />
         )}
 
@@ -258,7 +328,7 @@ export default function App() {
           <ProfilePage
             profile={profile}
             onProfileChange={setProfile}
-            transactions={[]}
+            transactions={transactions}
             balanceHidden={balanceHidden}
             onToggleBalance={toggleBalance}
             onResetPassword={() => setPasswordResetOpen(true)}
@@ -277,12 +347,25 @@ export default function App() {
         />
       )}
 
-            {/* FUND WALLET:
+      {/* FUND WALLET:
           Keep the account target until the user closes the form/confirmation. */}
       {fundAccountId !== null && (
         <FundWalletOverlay
           onFund={fundAccount}
           onDismiss={() => setFundAccountId(null)}
+        />
+      )}
+      {/* WITHDRAW OVERLAY:
+    Uses the target account's current calculated balance.
+    Closing leaves the Accounts page and selected account in place. */}
+      {withdrawAccountId !== null && (
+        <WithdrawWalletOverlay
+          availableBalanceKobo={calculateBalance(
+            transactions,
+            withdrawAccountId,
+          )}
+          onWithdraw={withdrawAccount}
+          onDismiss={() => setWithdrawAccountId(null)}
         />
       )}
 

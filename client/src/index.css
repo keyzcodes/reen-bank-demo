@@ -1134,6 +1134,62 @@
   }
 }
 
+/* LOGOUT MOBILE:
+   Compact the message, spacing and visible buttons.
+   Retain a 44px clickable area for each action. */
+@media (max-width: 639px) {
+  .reen-logout-dialog {
+    border-radius: 20px;
+    max-height: calc(100dvh - 32px);
+  }
+
+  .reen-logout-content {
+    padding: 20px 16px;
+  }
+
+  .reen-logout-message {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .reen-logout-actions {
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  /* BUTTONS:
+     The coloured surface is 32px high.
+     Transparent space above and below remains clickable. */
+  .reen-logout-actions button {
+    position: relative;
+    isolation: isolate;
+    height: 44px;
+    padding: 0 8px;
+    border-radius: 8px;
+    background: transparent;
+    font-size: 13px;
+    line-height: 18px;
+    white-space: nowrap;
+  }
+
+  .reen-logout-actions button::before {
+    content: "";
+    position: absolute;
+    inset: 6px 0;
+    z-index: -1;
+    border-radius: 8px;
+    pointer-events: none;
+  }
+
+  .reen-logout-cancel::before {
+    background: #d4d4d4;
+  }
+
+  .reen-logout-confirm::before {
+    background: #33b786;
+  }
+}
+
 .reen-reset-dialog {
   box-sizing: border-box;
   width: min(787px, calc(100vw - 32px));
@@ -1569,5 +1625,268 @@
     height: calc(40 * var(--auth-unit));
     padding-left: calc(24 * var(--auth-unit));
     font-size: calc(16 * var(--auth-unit));
+  }
+}
+
+/* PASSWORD RESET: Compact phone layout for every step.
+   Desktop measurements remain in the existing desktop rules. */
+@media (max-width: 639px) {
+  .reen-reset-dialog,
+  .reen-reset-dialog.reen-reset-success {
+    width: calc(100% - 32px);
+    max-height: calc(100dvh - 32px);
+    border-radius: 20px;
+  }
+
+  .reen-reset-content {
+    padding: 20px 16px;
+  }
+
+  .reen-reset-content h2 {
+    font-size: 22px;
+    line-height: 28px;
+  }
+
+  .reen-reset-content form {
+    margin-top: 16px;
+  }
+
+  .reen-reset-content label {
+    margin-bottom: 6px;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  /* INPUTS: Compact controls with readable typing text. */
+  .reen-reset-content input {
+    min-width: 0;
+    height: 44px;
+    padding: 0 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .reen-reset-content .reen-reset-field input,
+  .reen-reset-content .reen-reset-email-field input {
+    padding-right: 48px;
+  }
+
+  .reen-reset-envelope {
+    right: 14px;
+    width: 16px;
+    height: 16px;
+  }
+
+  /* PASSWORD TOGGLE: Small padlock inside a comfortable touch target. */
+  .reen-reset-lock-toggle {
+    right: 0;
+    width: 44px;
+    height: 44px;
+  }
+
+  .reen-reset-lock-toggle svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .reen-reset-repeat-label {
+    margin-top: 16px;
+  }
+
+  .reen-reset-password-help {
+    margin-top: 8px;
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  /* OTP: Six equal boxes that fit the available phone width. */
+  .reen-reset-content .reen-reset-otp-fields {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 6px;
+    margin-top: 16px;
+  }
+
+  .reen-reset-otp-fields input {
+    width: 100%;
+    min-width: 0;
+    height: 44px;
+    padding: 0;
+    text-align: center;
+  }
+
+  .reen-reset-description,
+  .reen-reset-resend,
+  .reen-reset-countdown {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .reen-reset-countdown {
+    margin-top: 12px;
+  }
+
+  .reen-reset-resend {
+    margin-top: 16px;
+  }
+
+  .reen-reset-demo,
+  .reen-reset-feedback {
+    margin-top: 12px;
+    font-size: 10px;
+    line-height: 15px;
+  }
+
+  /* BUTTON: 32px visible background inside a 44px touch target. */
+  .reen-reset-primary {
+    position: relative;
+    isolation: isolate;
+    height: 44px;
+    margin-top: 16px;
+    padding: 0 10px;
+    border-radius: 8px;
+    background: transparent;
+    font-size: 13px;
+    line-height: 18px;
+    box-shadow: none;
+  }
+
+  .reen-reset-primary::before {
+    content: "";
+    position: absolute;
+    inset: 6px 0;
+    z-index: -1;
+    border-radius: 8px;
+    background: #33b786;
+    pointer-events: none;
+  }
+
+  .reen-reset-primary:hover {
+    background: transparent;
+  }
+
+  .reen-reset-primary:hover::before {
+    background: #288f69;
+  }
+
+  /* CONFIRMATION: Smaller GIF and message for phones. */
+  .reen-reset-tick {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 12px;
+  }
+
+  .reen-reset-success h2 {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+/* RESET MOBILE: Smaller placeholders; entered text stays readable. */
+@media (max-width: 639px) {
+  .reen-reset-content input::placeholder {
+    font-size: 13px;
+    font-weight: 400;
+  }
+}
+/* ADD ACCOUNT: Compact phone presentation.
+   Reduce all content sizes together; preserve desktop Figma geometry. */
+@media (max-width: 639px) {
+  .reen-add-dialog {
+    padding: 20px 16px;
+    border-radius: 20px;
+  }
+
+  .reen-add-dialog h2 {
+    margin-bottom: 16px;
+    font-size: 22px;
+    line-height: 28px;
+  }
+
+  .reen-add-dialog label {
+    margin-bottom: 6px;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  /* FIELDS: Readable entered text with smaller placeholders. */
+  .reen-add-dialog input,
+  .reen-add-dialog textarea {
+    min-width: 0;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .reen-add-dialog input {
+    height: 44px;
+  }
+
+  .reen-add-dialog textarea {
+    height: 88px;
+  }
+
+  .reen-add-dialog input::placeholder,
+  .reen-add-dialog textarea::placeholder {
+    font-size: 13px;
+    font-weight: 400;
+  }
+
+  .reen-add-description-field {
+    margin-top: 16px;
+  }
+
+  .reen-add-dialog-actions {
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  /* ACTIONS: Small visible button with a 44px touch target.
+     Cancel keeps its existing transparent appearance. */
+  .reen-add-dialog-actions button {
+    position: relative;
+    isolation: isolate;
+    height: 44px;
+    padding: 0 8px;
+    border-radius: 8px;
+    background: transparent;
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .reen-add-submit::before {
+    content: "";
+    position: absolute;
+    inset: 6px 0;
+    z-index: -1;
+    border-radius: 8px;
+    background: #33b786;
+    pointer-events: none;
+  }
+
+  .reen-add-error {
+    margin-top: 12px;
+    font-size: 11px;
+    line-height: 16px;
+  }
+}
+/* PHONE POPUPS: Hide focus outlines after touch interaction.
+   Keep focus-visible outlines for keyboard navigation. */
+@media (max-width: 639px) {
+  :is(
+    .reen-add-dialog,
+    .reen-reset-dialog,
+    .reen-logout-dialog,
+    .reen-fund-dialog,
+    .reen-withdraw-dialog
+  ) button:focus:not(:focus-visible),
+  :is(
+    .reen-add-dialog,
+    .reen-reset-dialog,
+    .reen-logout-dialog,
+    .reen-fund-dialog,
+    .reen-withdraw-dialog
+  ) button:focus:not(:focus-visible)::before {
+    outline: none;
   }
 }

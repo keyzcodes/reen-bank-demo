@@ -532,3 +532,260 @@
     line-height: calc(21 * var(--account-unit));
   }
 }
+
+/* ACCOUNTS: Compact mobile and tablet presentation.
+   Desktop Figma measurements remain in the existing desktop rules. */
+@media (max-width: 1023px) {
+    /* MOBILE ACCOUNT CARDS:
+     Reduce card height, spacing and typography together.
+     Buttons retain a comfortable 44px touch height. */
+  .reen-account-grid {
+    gap: 12px;
+  }
+
+  .reen-account-card,
+  .reen-add-account {
+    height: 144px;
+  }
+
+  /* ACCOUNT DETAILS:
+     Compact spacing leaves more room for the full balance. */
+  .reen-account-select {
+    top: 16px;
+    left: 16px;
+    right: 16px;
+  }
+
+  .reen-account-name {
+    max-width: calc(100% - 44px);
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .reen-account-balance,
+  .reen-add-account-balance {
+    margin-top: 4px;
+    font-size: 26px;
+    line-height: 32px;
+    white-space: nowrap;
+  }
+
+  /* VISIBILITY CONTROL:
+     Small visible icon inside a larger touch target. */
+  .reen-account-visibility {
+    top: 4px;
+    right: 4px;
+    width: 44px;
+    height: 44px;
+    padding: 14px;
+  }
+
+  .reen-account-visibility img {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* FUND AND WITHDRAW:
+     Share the available width and stay on one line. */
+  .reen-account-actions {
+    top: auto;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    gap: 10px;
+  }
+
+  /* MOBILE BUTTONS:
+     Keep a 44px clickable area.
+     The coloured surface is only 32px high. */
+  .reen-account-actions button {
+    position: relative;
+    isolation: isolate;
+    flex: 1;
+    width: auto;
+    min-width: 0;
+    height: 44px;
+    padding: 0;
+    background: transparent;
+    font-size: 12px;
+    line-height: 16px;
+    white-space: nowrap;
+  }
+
+  /* BUTTON SURFACE:
+     Leave 6px of transparent touch space above and below. */
+  .reen-account-actions button::before {
+    content: "";
+    position: absolute;
+    inset: 6px 0;
+    z-index: -1;
+    border-radius: 6px;
+    pointer-events: none;
+  }
+
+  .reen-account-fund::before {
+    background: #33b786;
+  }
+
+  .reen-account-withdraw::before {
+    background: #d4d4d4;
+  }
+  /* ADD ACCOUNT:
+     Match the spacing and typography of the other cards. */
+  .reen-add-account > img {
+    top: 16px;
+    left: 16px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .reen-add-account-label {
+    top: 19px;
+    left: 50px;
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .reen-add-account-balance {
+    top: auto;
+    bottom: 16px;
+    left: 16px;
+    margin: 0;
+  }
+  /* HISTORY HEADER:
+     Keep the title and View All action compact and on one line. */
+  .reen-account-transactions {
+    margin-top: 32px;
+  }
+
+  .reen-account-transactions-header {
+    gap: 12px;
+  }
+
+  .reen-account-transactions-header h2 {
+    font-size: 20px;
+    line-height: 26px;
+  }
+
+  .reen-account-view-all {
+    gap: 8px;
+    min-height: 44px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .reen-account-view-all img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .reen-account-empty {
+    margin-top: 20px;
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+    /* MOBILE HISTORY:
+     One layout for transaction rows.
+     Icon beside both lines; name/date left; amount/status right. */
+  .reen-account-transaction-list {
+    margin-top: 20px;
+    gap: 16px;
+  }
+
+  .reen-account-transaction {
+    display: grid;
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "symbol name amount"
+      "symbol date status";
+    column-gap: 8px;
+    row-gap: 4px;
+    align-items: center;
+    min-width: 0;
+    min-height: 52px;
+    padding: 0;
+    border: 0;
+  }
+
+  .reen-account-transaction-symbol {
+    grid-area: symbol;
+    align-self: center;
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+  }
+
+  /* NAME:
+     Shorten long names so the amount keeps its space. */
+  .reen-account-transaction-name {
+    grid-area: name;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  .reen-account-transaction-date {
+    grid-area: date;
+    min-width: 0;
+    font-size: 10px;
+    line-height: 16px;
+    overflow-wrap: normal;
+  }
+
+  /* PAYMENT METHOD:
+     Not displayed in the supplied Figma design.
+     Remove its span from AccountsScreen.tsx as previously instructed. */
+  .reen-account-transaction-method {
+    display: none;
+  }
+
+  .reen-account-transaction-amount {
+    grid-area: amount;
+    justify-self: end;
+    font-size: 20px;
+    line-height: 24px;
+    white-space: nowrap;
+  }
+
+  .reen-account-transaction-status {
+    grid-area: status;
+    justify-self: end;
+    align-self: center;
+    min-height: 0;
+    padding: 0;
+    border-radius: 0;
+    font-size: 11px;
+    line-height: 16px;
+    white-space: nowrap;
+  }
+
+  /* STATUS COLOURS:
+     Override both background and text at the same specificity
+     as the original badge rules. */
+  .reen-account-transaction-status.is-completed {
+    background: transparent;
+    color: #33b786;
+  }
+
+  .reen-account-transaction-status.is-pending {
+    background: transparent;
+    color: #555555;
+  }
+
+  .reen-account-transaction-status.is-failed {
+    background: transparent;
+    color: #e74f5b;
+  }
+}
+
+/* NARROW TABLETS:
+   Keep cards stacked until two columns have sufficient room. */
+@media (min-width: 640px) and (max-width: 767px) {
+  .reen-account-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

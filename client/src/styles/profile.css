@@ -478,22 +478,23 @@
     gap: calc(32 * var(--profile-unit));
   }
 
-  /* TRANSACTION COLUMNS:
-     Name starts at x=1342.
-     Date starts 182px later, at x=1524.
-     Amount occupies the final 87px and ends at x=1823.
-     The 56px space after the date follows those verified coordinates. */
+  /* DESKTOP TRANSACTION COLUMNS:
+     Amounts use their natural width and end at the panel's right edge.
+     Names use the remaining space; dates retain a dedicated column.
+     This adapts the fixture layout to larger transaction amounts. */
   .reen-profile-shell .reen-profile-transaction {
     position: relative;
     display: grid;
     grid-template-columns:
       minmax(0, 1fr)
       calc(156 * var(--profile-unit))
-      calc(56 * var(--profile-unit))
-      calc(87 * var(--profile-unit));
+      max-content;
+    column-gap: calc(16 * var(--profile-unit));
+    row-gap: 0;
     align-items: center;
-    gap: 0;
-    height: calc(29 * var(--profile-unit));
+    min-width: 0;
+    min-height: calc(29 * var(--profile-unit));
+    height: auto;
     padding: 0;
     border: 0;
     color: #8c8c8c;
@@ -506,6 +507,9 @@
     grid-column: 1;
     grid-row: 1;
     min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .reen-profile-shell .reen-profile-transaction time {
@@ -518,8 +522,9 @@
   }
 
   .reen-profile-shell .reen-profile-transaction strong {
-    grid-column: 4;
+    grid-column: 3;
     grid-row: 1;
+    justify-self: end;
     align-self: center;
     font-family: "Bebas Neue", sans-serif;
     font-size: calc(24 * var(--profile-unit));
@@ -589,5 +594,268 @@
     font-size: max(12px, calc(14 * var(--profile-unit)));
     line-height: 1.2;
     white-space: nowrap;
+  }
+}
+
+/* PROFILE MOBILE:
+   Compact every part of the page below the desktop breakpoint.
+   Let content determine height so editing and long emails remain usable. */
+@media (max-width: 1023px) {
+  .reen-profile-page {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .reen-profile-card {
+    padding: 20px 16px;
+  }
+
+  /* IDENTITY:
+     Smaller avatar, name and badge reduce the card's overall height. */
+  .reen-profile-avatar-wrap {
+    width: 80px;
+    height: 80px;
+  }
+
+  .reen-profile-edit {
+    top: -6px;
+    right: -6px;
+    width: 44px;
+    height: 44px;
+    padding: 14px;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: none;
+    isolation: isolate;
+  }
+
+  /* EDIT CONTROL:
+     A 28px visible surface inside the larger clickable button. */
+  .reen-profile-edit::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    z-index: -1;
+    border-radius: 8px;
+    background: #d4d4d4;
+  }
+
+  .reen-profile-name {
+    margin-top: 12px;
+    font-size: 20px;
+    line-height: 26px;
+  }
+
+  .reen-profile-badge {
+    width: 92px;
+    height: 28px;
+    margin-top: 6px;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  /* SAVED DETAILS:
+     Keep the full email visible, wrapping only when necessary. */
+  .reen-profile-details {
+    margin-top: 24px;
+  }
+
+  .reen-profile-details > div {
+    padding-bottom: 16px;
+  }
+
+  .reen-profile-details > div + div {
+    padding-top: 16px;
+  }
+
+  .reen-profile-details > div:last-child {
+    padding-bottom: 0;
+  }
+
+  .reen-profile-details dt {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .reen-profile-details dd {
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 20px;
+    overflow-wrap: anywhere;
+  }
+
+  .reen-profile-reset {
+    height: 44px;
+    margin-top: 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    box-shadow: none;
+  }
+
+  /* EDIT FORM:
+     Compact labels and spacing with usable field heights. */
+  .reen-profile-editor {
+    min-width: 0;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .reen-profile-editor label {
+    min-width: 0;
+    gap: 4px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .reen-profile-editor input,
+  .reen-profile-editor select {
+    min-width: 0;
+    min-height: 44px;
+    padding: 8px 10px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .reen-profile-editor input[type="file"] {
+    font-size: 12px;
+  }
+
+  .reen-profile-editor-actions {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .reen-profile-editor-actions button {
+    min-width: 0;
+    min-height: 44px;
+    padding: 8px 12px;
+    font-size: 12px;
+    line-height: 18px;
+    white-space: nowrap;
+  }
+
+  /* BALANCE:
+     Reduce the card padding, label and amount together. */
+  .reen-profile-right {
+    min-width: 0;
+  }
+
+  .reen-profile-balance {
+    min-width: 0;
+    padding: 16px;
+  }
+
+  .reen-profile-balance p {
+    padding-right: 36px;
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .reen-profile-balance strong {
+    margin-top: 4px;
+    font-size: 28px;
+    line-height: 34px;
+    white-space: nowrap;
+  }
+
+  /* EYE ICON:
+     A 16px icon inside a transparent 44px touch target. */
+  .reen-profile-balance button {
+    top: 4px;
+    right: 4px;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 14px;
+  }
+
+  .reen-profile-balance button img,
+  .reen-profile-balance button svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* TRANSACTION HEADING:
+     Smaller arrow inside a comfortable touch target. */
+  .reen-profile-transactions {
+    margin-top: 24px;
+  }
+
+  .reen-profile-transactions-heading {
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .reen-profile-transactions-heading h2 {
+    font-size: 20px;
+    line-height: 26px;
+  }
+
+  .reen-profile-transactions-heading button {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+  }
+
+  .reen-profile-transactions-heading img {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* TRANSACTION ROWS:
+     Name and date on the left; full amount on the right.
+     Profile has no transaction icons. */
+  .reen-profile-transaction-list {
+    display: grid;
+    gap: 0;
+    min-width: 0;
+  }
+
+  .reen-profile-transaction {
+    grid-template-columns: minmax(0, 1fr) max-content;
+    column-gap: 8px;
+    row-gap: 4px;
+    align-items: center;
+    min-width: 0;
+    padding: 12px 0;
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .reen-profile-transaction > span {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .reen-profile-transaction time {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 10px;
+    line-height: 16px;
+    overflow-wrap: normal;
+  }
+
+  .reen-profile-transaction strong {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    justify-self: end;
+    align-self: center;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .reen-profile-transaction:last-child {
+    border-bottom: 0;
   }
 }
