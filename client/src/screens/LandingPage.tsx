@@ -73,6 +73,8 @@ const faqs = [
 export default function LandingPage() {
   const pageRef = useRef<HTMLElement>(null);
   const [activeFaq, setActiveFaq] = useState(0);
+  // MOBILE MENU: Keep navigation collapsed until the menu button is pressed.
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useLayoutEffect(() => {
     const page = pageRef.current;
@@ -108,26 +110,30 @@ export default function LandingPage() {
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
       <section className="relative min-h-screen overflow-hidden bg-[#d4f3e7] lg:min-h-[1080px]">
-        <header className="relative z-10 mx-auto flex w-full max-w-[1680px] flex-wrap items-center gap-6 px-6 pt-6 lg:h-[128px] lg:flex-nowrap lg:gap-0 lg:px-8 lg:pt-[64px] xl:px-10 min-[1700px]:px-0">
+        {/* LANDING HEADER:
+    Phones and tablets use a compact menu.
+    Desktop keeps the existing Figma navigation and Login button. */}
+        <header className="relative z-20 mx-auto flex w-full max-w-[1680px] items-center justify-between gap-4 px-6 pt-6 lg:h-[128px] lg:gap-0 lg:px-8 lg:pt-[64px] xl:px-10 min-[1700px]:px-0">
           <img
             src={`${assets}/17ec0.png`}
             alt="Reen Bank"
-            className="h-auto w-[190px] lg:w-[273px]"
+            className="h-auto w-[160px] shrink-0 lg:w-[273px]"
           />
 
+          {/* DESKTOP NAVIGATION: Visible from 1024px upwards. */}
           <nav
             aria-label="Main navigation"
-            className="flex items-center gap-6 lg:ml-[120px] lg:gap-[64px]"
+            className="hidden items-center lg:ml-[120px] lg:mr-auto lg:flex lg:gap-[64px]"
           >
             <a
               href="#about"
-              className="text-[#252525] hover:text-[#33b786] lg:text-[24px]"
+              className="text-[24px] text-[#252525] hover:text-[#33b786]"
             >
               About
             </a>
             <a
               href="#contact"
-              className="whitespace-nowrap text-[#252525] hover:text-[#33b786] lg:text-[24px]"
+              className="whitespace-nowrap text-[24px] text-[#252525] hover:text-[#33b786]"
             >
               Contact Us
             </a>
@@ -135,10 +141,84 @@ export default function LandingPage() {
 
           <a
             href="/login"
-            className="ml-auto inline-flex h-11 items-center justify-center rounded-[10px] border-[3px] border-[#33b786] px-5 font-medium text-[#33b786] transition-[transform,background-color,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 active:scale-[0.96] motion-reduce:transition-none lg:h-[64px] lg:w-[140px] lg:px-0 lg:text-[24px]"
+            className="ml-auto hidden h-[64px] w-[140px] items-center justify-center rounded-[10px] border-[3px] border-[#33b786] text-[24px] font-medium text-[#33b786] transition-[transform,background-color,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 active:scale-[0.96] motion-reduce:transition-none lg:inline-flex"
           >
             Login
           </a>
+
+          {/* MOBILE MENU BUTTON:
+      The icon is small; the button provides a 44px touch target. */}
+          <button
+            type="button"
+            aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={menuOpen}
+            aria-controls="reen-landing-mobile-menu"
+            onClick={() => setMenuOpen((open) => !open)}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") setMenuOpen(false);
+            }}
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[#252525] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#269e73] lg:hidden"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              aria-hidden="true"
+            >
+              {menuOpen ? (
+                <path d="M6 6l12 12M18 6 6 18" />
+              ) : (
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+
+          {/* MOBILE LINKS:
+      Positioned over the hero so opening the menu does not shift it.
+      Choosing a link or pressing Escape closes the menu. */}
+          <nav
+            id="reen-landing-mobile-menu"
+            aria-label="Mobile main navigation"
+            hidden={!menuOpen}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                setMenuOpen(false);
+                const header = event.currentTarget.closest("header");
+                header
+                  ?.querySelector<HTMLButtonElement>(
+                    'button[aria-controls="reen-landing-mobile-menu"]',
+                  )
+                  ?.focus();
+              }
+            }}
+            className="absolute left-6 right-6 top-full mt-3 rounded-xl bg-white p-3 shadow-lg lg:hidden"
+          >
+            <a
+              href="#about"
+              onClick={() => setMenuOpen(false)}
+              className="flex min-h-11 items-center rounded-lg px-3 text-sm font-medium text-[#252525] hover:bg-[#d4f3e7]"
+            >
+              About
+            </a>
+            <a
+              href="#contact"
+              onClick={() => setMenuOpen(false)}
+              className="flex min-h-11 items-center rounded-lg px-3 text-sm font-medium text-[#252525] hover:bg-[#d4f3e7]"
+            >
+              Contact Us
+            </a>
+            <a
+              href="/login"
+              onClick={() => setMenuOpen(false)}
+              className="mt-2 flex min-h-11 items-center justify-center rounded-lg bg-[#33b786] text-sm font-bold text-white"
+            >
+              Login
+            </a>
+          </nav>
         </header>
 
         <div className="relative z-10 mx-auto w-full max-w-[1680px] px-6 pb-12 lg:mt-[207px] lg:px-8 xl:px-10 min-[1700px]:px-0">
