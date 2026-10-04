@@ -328,9 +328,19 @@
   line-height: calc(21 * var(--transaction-unit));
 }
 
-  .reen-history-row + .reen-history-row {
-    margin-top: calc(24 * var(--transaction-unit));
-  }
+ /* DESKTOP HISTORY: Row padding controls all vertical spacing.
+   Remove the list gap and additional row margins. */
+.reen-history-list {
+  gap: 0;
+}
+
+.reen-history-row + .reen-history-row {
+  margin-top: 0;
+}
+
+.reen-history-row {
+  padding-block: calc(16 * var(--transaction-unit));
+}
 
   .reen-history-row > * {
     grid-area: auto;
