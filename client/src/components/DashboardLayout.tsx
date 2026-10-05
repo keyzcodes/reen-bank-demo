@@ -1,4 +1,10 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import NotificationPanel from "./NotificationPanel";
+import {
+  loadNotifications,
+  markNotificationRead,
+} from "../api/notificationsApi";
+import type { BankNotification } from "../api/notificationsApi";
 import type { ReactNode } from "react";
 import type { CustomerProfile } from "../screens/ProfilePage";
 import DashboardSidebar, { NavButton, navItems } from "./DashboardSidebar";
@@ -30,6 +36,88 @@ export default function DashboardLayout({
   children,
 }: DashboardLayoutProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  // NOTIFICATIONS: Both bells share these saved cloud alerts.
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [notifications, setNotifications] = useState<BankNotification[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [notificationsLoading, setNotificationsLoading] = useState(false);
+  const [notificationsError, setNotificationsError] = useState("");
+
+  const notificationsMounted = useRef(false);
+  const notificationsRequest = useRef(0);
+
+  // Ignore older responses if another refresh has already started.
+  const refreshNotifications = useCallback(async () => {
+    const requestId = ++notificationsRequest.current;
+
+    setNotificationsLoading(true);
+    setNotificationsError("");
+
+    try {
+      const result = await loadNotifications();
+
+      if (
+        notificationsMounted.current &&
+        requestId === notificationsRequest.current
+      ) {
+        setNotifications(result.notifications);
+        setUnreadCount(result.unreadCount);
+      }
+    } catch {
+      if (
+        notificationsMounted.current &&
+        requestId === notificationsRequest.current
+      ) {
+        setNotificationsError("Could not load notifications. Try again.");
+      }
+    } finally {
+      if (
+        notificationsMounted.current &&
+        requestId === notificationsRequest.current
+      ) {
+        setNotificationsLoading(false);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    notificationsMounted.current = true;
+    void refreshNotifications();
+
+    function refreshWhenVisible() {
+      if (document.visibilityState === "visible") {
+        void refreshNotifications();
+      }
+    }
+
+    // Refresh after this app saves a transaction, when returning to the
+    // browser, and every 30 seconds while the page is visible.
+    window.addEventListener("reen-transaction-saved", refreshWhenVisible);
+    window.addEventListener("focus", refreshWhenVisible);
+    document.addEventListener("visibilitychange", refreshWhenVisible);
+
+    const interval = window.setInterval(refreshWhenVisible, 30_000);
+
+    return () => {
+      notificationsMounted.current = false;
+      notificationsRequest.current += 1;
+      window.clearInterval(interval);
+      window.removeEventListener("reen-transaction-saved", refreshWhenVisible);
+      window.removeEventListener("focus", refreshWhenVisible);
+      document.removeEventListener("visibilitychange", refreshWhenVisible);
+    };
+  }, [refreshNotifications]);
+
+ function openNotifications() {
+  setMenuOpen(false);
+  setNotificationsOpen(true);
+  void refreshNotifications();
+}
+
+  async function readNotification(id: string) {
+    await markNotificationRead(id);
+    await refreshNotifications();
+  }
 
   // MOBILE NAVIGATION:
   // Close the menu after choosing a page.
@@ -81,10 +169,29 @@ export default function DashboardLayout({
         <div className="flex shrink-0 items-center gap-1 sm:gap-3">
           <button
             type="button"
-            aria-label="Notifications"
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer"
+            aria-label={`Notifications, ${unreadCount} unread`}
+            onClick={openNotifications}
+            className="reen-notification-bell relative flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center cursor-pointer"
           >
-            <img src="/assets/23954.svg" alt="" className="w-6 h-6" />
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-6 w-6 text-[#252525]"
+              aria-hidden="true"
+            >
+              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
+              <path d="M10 21h4" />
+            </svg>
+
+            {unreadCount > 0 && (
+              <span className="reen-notification-count" aria-hidden="true">
+                {unreadCount > 99 ? "99+" : unreadCount}
+              </span>
+            )}
           </button>
 
           <button
@@ -182,10 +289,24 @@ export default function DashboardLayout({
             title={activeNav}
             profile={profile}
             accountNumber="1234567890"
+            onNotifications={openNotifications}
+            unreadCount={unreadCount}
           />
 
           {/* PAGE CONTENT: The selected screen supplies this area. */}
           {children}
+          {notificationsOpen && (
+            <NotificationPanel
+              notifications={notifications}
+              loading={notificationsLoading}
+              error={notificationsError}
+              onRefresh={() => {
+                void refreshNotifications();
+              }}
+              onRead={readNotification}
+              onDismiss={() => setNotificationsOpen(false)}
+            />
+          )}
         </main>
       </div>
     </div>

@@ -1,0 +1,198 @@
+/* NOTIFICATIONS:
+   Compact mobile layout with a capped desktop width.
+   This popup does not change the dashboard's existing geometry. */
+.reen-notifications-dialog {
+  box-sizing: border-box;
+  width: min(440px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 0;
+  overflow-y: auto;
+  border: 0;
+  border-radius: 20px;
+  background: #fff;
+  color: #252525;
+  font-family: "DM Sans", sans-serif;
+  box-shadow: 0 16px 60px rgb(0 0 0 / 18%);
+}
+
+.reen-notifications-dialog::backdrop {
+  background: rgb(0 0 0 / 20%);
+}
+
+.reen-notifications-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.reen-notifications-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.reen-notifications-close {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #555;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.reen-notifications-body {
+  padding: 16px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.reen-notifications-empty {
+  margin: 0;
+  padding: 16px 0;
+  color: #555;
+}
+
+.reen-notifications-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reen-notification {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+}
+
+.reen-notification.is-unread {
+  border-color: #d4f3e7;
+  background: #f0faf5;
+}
+
+.reen-notification h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.reen-notification p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.reen-notification strong {
+  color: #269e73;
+  white-space: nowrap;
+}
+
+.reen-notification-unread {
+  flex-shrink: 0;
+  color: #269e73;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.reen-notification-recipient {
+  margin-top: 4px !important;
+  color: #555;
+}
+
+.reen-notification-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 12px;
+  margin-top: 8px;
+}
+
+.reen-notification-footer time {
+  color: #777;
+  font-size: 11px;
+}
+
+.reen-notification-footer button,
+.reen-notifications-error button {
+  min-height: 44px;
+  padding: 6px 0;
+  border: 0;
+  background: transparent;
+  color: #269e73;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.reen-notifications-error {
+  color: #b42318;
+}
+
+.reen-notifications-dialog button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.reen-notifications-dialog button:focus-visible {
+  outline: 2px solid #269e73;
+  outline-offset: 2px;
+}
+
+@media (min-width: 640px) {
+  .reen-notifications-header {
+    padding-inline: 24px;
+  }
+
+  .reen-notifications-body {
+    padding: 24px;
+  }
+}
+
+/* BADGE: Positioned without changing header spacing. */
+.reen-notification-count {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  display: grid;
+  place-items: center;
+  min-width: 16px;
+  height: 16px;
+  padding-inline: 3px;
+  border-radius: 999px;
+  background: #e74f5b;
+  color: #fff;
+  font: 700 9px / 1 "DM Sans", sans-serif;
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .reen-notification-count {
+    top: 3px;
+    right: 2px;
+  }
+}
+
+/* Match the existing scaled desktop header icon dimensions. */
+@media (min-width: 1024px) {
+  .reen-dashboard-notifications > svg {
+    width: calc(24 * var(--dashboard-unit));
+    height: calc(24 * var(--dashboard-unit));
+  }
+}

@@ -211,6 +211,8 @@ export async function saveAccount(account: Account): Promise<Account> {
     .single();
 
   if (error) throw new Error(error.message);
+  // Refresh notification bells after the database saves the transaction.
+window.dispatchEvent(new Event("reen-transaction-saved"));
 
   return mapAccount(data);
 }

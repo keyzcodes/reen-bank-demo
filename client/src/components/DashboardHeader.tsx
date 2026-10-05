@@ -14,10 +14,14 @@ export default function DashboardHeader({
   title,
   profile,
   accountNumber,
+  onNotifications,
+  unreadCount,
 }: {
   title: string;
   profile: CustomerProfile;
   accountNumber: string;
+  onNotifications: () => void;
+  unreadCount: number;
 }) {
   return (
     <div className="reen-dashboard-header hidden md:flex items-start justify-between flex-wrap gap-4 mb-6 md:mb-8 xl:mb-[100px]">
@@ -59,10 +63,29 @@ export default function DashboardHeader({
 
         <button
           type="button"
-          aria-label="Notifications"
-          className="reen-dashboard-notifications cursor-pointer"
+          aria-label={`Notifications, ${unreadCount} unread`}
+          onClick={onNotifications}
+          className="reen-dashboard-notifications reen-notification-bell relative shrink-0 cursor-pointer"
         >
-          <img src="/assets/23954.svg" alt="" className="w-6 h-6" />
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-6 w-6 text-[#252525]"
+            aria-hidden="true"
+          >
+            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
+            <path d="M10 21h4" />
+          </svg>
+
+          {unreadCount > 0 && (
+            <span className="reen-notification-count" aria-hidden="true">
+              {unreadCount > 99 ? "99+" : unreadCount}
+            </span>
+          )}
         </button>
 
         <button
