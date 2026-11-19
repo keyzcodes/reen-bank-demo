@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ReportingDropdown from "../components/ReportingDropdown";
+import MoneyAmount from "../components/MoneyAmount";
 import type { BankTransaction, DateRange } from "../utils/banking";
 import {
   calculateActivity,
@@ -259,8 +260,8 @@ export default function OverviewPage({
                 <p className="text-[16px] font-medium text-[#46237a]">
                   {item.label}
                 </p>
-                <p className={`mt-2 break-words ${numberClass}`}>
-                  {displayMoney(item.amount)}
+                <p className={`mt-2 min-w-0 ${numberClass}`}>
+                  <MoneyAmount text={displayMoney(item.amount)} />
                 </p>
               </div>
             ))}
@@ -299,8 +300,10 @@ export default function OverviewPage({
                   <span className="text-[16px] font-medium text-[#46237a]">
                     {account.name}
                   </span>
-                  <span className={`mt-2 break-words ${numberClass}`}>
-                    {displayMoney(calculateBalance(transactions, account.id))}
+                  <span className={`mt-2 block w-full min-w-0 ${numberClass}`}>
+                    <MoneyAmount
+                      text={displayMoney(calculateBalance(transactions, account.id))}
+                    />
                   </span>
                 </button>
               ))}
@@ -373,8 +376,8 @@ export default function OverviewPage({
                   />
                 </div>
 
-                <p className={`text-right text-[#555] ${numberClass}`}>
-                  {displayMoney(item.amount)}
+                <p className={`w-full min-w-0 text-right text-[#555] ${numberClass}`}>
+                  <MoneyAmount text={displayMoney(item.amount)} />
                 </p>
               </div>
             ))}

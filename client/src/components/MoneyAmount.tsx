@@ -86,12 +86,14 @@ export default function MoneyAmount({ text }: MoneyAmountProps) {
         // If even the minimum size cannot fit, allow this amount alone
         // to scroll horizontally rather than clipping its digits.
         overflowX: "auto",
+        overflowY: "hidden",
       }}
     >
       <span
         ref={textRef}
         style={{
           display: "inline-block",
+          verticalAlign: "top",
           whiteSpace: "nowrap",
         }}
       >

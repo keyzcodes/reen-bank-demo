@@ -6,6 +6,14 @@ The project focuses first on reproducing the supplied interface and user journey
 
 ## Project Status
 
+**Overview layout update — 19 November 2026:** Overview now uses the existing
+`MoneyAmount` component for summary, account-card and statistics values. Statistics
+amount columns have bounded widths so large values cannot expand their grid tracks.
+This addresses user-reported overlapping desktop amounts. TypeScript checking,
+the Vite production build and `git diff --check` passed in the review checkout.
+Browser viewport checks were blocked by the review environment; visual confirmation
+and installation in the live deployment are pending. Financial calculations are unchanged.
+
 **In development — frontend implementation and refinement.**
 
 Currently implemented:

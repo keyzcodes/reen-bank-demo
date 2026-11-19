@@ -834,7 +834,7 @@
   }
 
   .reen-overview-centre > section:nth-child(3) > div:last-child > div {
-    grid-template-columns: 32px minmax(0, 1fr) auto;
+    grid-template-columns: 32px minmax(0, 1fr) minmax(0, 1.5fr);
     column-gap: 8px;
     row-gap: 8px;
     margin-block: 0;
@@ -993,8 +993,8 @@
     word-break: normal;
   }
 
-  /* STATISTICS: Amount determines its required width.
-     The bar uses the remaining space; the amount ends at the card edge. */
+  /* STATISTICS: Give the measured amount a bounded column.
+     A max-content track would grow with the number and push out the bar. */
   .reen-overview-shell
     .reen-overview-centre > section:nth-child(3) > div:last-child > div {
     display: grid;
@@ -1002,7 +1002,7 @@
       calc(48 * var(--overview-unit))
       calc(97 * var(--overview-unit))
       minmax(0, 1fr)
-      max-content;
+      minmax(0, calc(200 * var(--overview-unit)));
     align-items: center;
     column-gap: calc(24 * var(--overview-unit));
   }
@@ -1034,7 +1034,7 @@
     position: static;
     grid-column: 4;
     grid-row: 1;
-    width: auto;
+    width: 100%;
     justify-self: end;
     white-space: nowrap;
     overflow-wrap: normal;
